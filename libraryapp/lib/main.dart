@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import './profile.dart' as first;
 import './matches.dart' as second;
 import './events.dart' as third;
-import './edit_profile.dart' as edit_profile;
-import './create_event.dart' as create_event;
 
 void main() {
   runApp(new MaterialApp(home: new Tabs()));
@@ -41,7 +39,6 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: buildBody(context),
         bottomNavigationBar: new Material(
             color: Colors.green,
             child: new TabBar(controller: controller, tabs: <Tab>[
@@ -49,39 +46,23 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
               new Tab(icon: new Icon(choices[1].icon), text: choices[1].title),
               new Tab(icon: new Icon(choices[2].icon), text: choices[2].title)
             ])),
-        body: new TabBarView(controller: controller, physics: new NeverScrollableScrollPhysics(), children: <Widget>[
-          new first.Profile(),
-          new second.Matches(),
-          new third.Events()
-        ]));
+        body: new TabBarView(
+            controller: controller,
+            physics: new NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              new first.Profile(),
+              new second.Matches(),
+              new third.Events()
+            ]));
   }
 
   Widget buildBody(BuildContext context) {
     return new AppBar(
-      centerTitle: true,
-      title: new Text(
-        choice.title,
-      ),
-      backgroundColor: Colors.green,
-      actions: <Widget>[
-        new IconButton(
-            icon: new Icon(Icons.edit),
-            onPressed: () {
-              Navigator.of(context).push(new MaterialPageRoute<Null>(
-                    builder: (BuildContext context) =>
-                        new edit_profile.EditProfile(),
-                  ));
-            }),
-        new IconButton(
-            icon: new Icon(Icons.add),
-            onPressed: () {
-              Navigator.of(context).push(new MaterialPageRoute<Null>(
-                    builder: (BuildContext context) =>
-                        new create_event.CreateEvent(),
-                  ));
-            }),
-      ],
-    );
+        centerTitle: true,
+        title: new Text(
+          choice.title,
+        ),
+        backgroundColor: Colors.green);
   }
 }
 
