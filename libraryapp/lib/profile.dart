@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import './edit_profile.dart' as edit_profile;
+import './screens/edit_profile.dart' as edit_profile;
 
 class Profile extends StatelessWidget {
   @override
