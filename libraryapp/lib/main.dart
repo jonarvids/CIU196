@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import './profile.dart' as first;
 import './matches.dart' as second;
 import './events.dart' as third;
+import './edit_profile.dart' as edit_profile;
 
 void main() {
-  runApp(new MaterialApp(home: new Tabs()));
+  runApp(new MaterialApp(home: new Tabs(), routes: <String, WidgetBuilder>{
+    '/edit_profile': (BuildContext context) =>
+        new edit_profile.EditProfile(title: "Edit profile")
+  }));
 }
 
 class Tabs extends StatefulWidget {
@@ -39,43 +43,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          centerTitle: true,
-          title: new Text(
-            choice.title,
-          ),
-          backgroundColor: Colors.green,
-          actions: <Widget>[
-            new IconButton(
-                icon: new Icon(Icons.add),
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(
-                        new SnackBar(
-                          content: new Text("Added to favorite"),
-                          action: new SnackBarAction(
-                            label: "UNDO",
-                            onPressed: () =>
-                                Scaffold.of(context).hideCurrentSnackBar(),
-                          ),
-                        ),
-                      );
-                }),
-            new IconButton(
-                icon: new Icon(Icons.add),
-                onPressed: () {
-                  Scaffold.of(context).showSnackBar(
-                        new SnackBar(
-                          content: new Text("Added to favorite"),
-                          action: new SnackBarAction(
-                            label: "UNDO",
-                            onPressed: () =>
-                                Scaffold.of(context).hideCurrentSnackBar(),
-                          ),
-                        ),
-                      );
-                }),
-          ],
-        ),
+        appBar: buildBody(context),
         bottomNavigationBar: new Material(
             color: Colors.green,
             child: new TabBar(controller: controller, tabs: <Tab>[
@@ -88,6 +56,46 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
           new second.Matches(),
           new third.Events()
         ]));
+  }
+
+  Widget buildBody(BuildContext context) {
+    return new AppBar(
+      centerTitle: true,
+      title: new Text(
+        choice.title,
+      ),
+      backgroundColor: Colors.green,
+      actions: <Widget>[
+        new IconButton(
+            icon: new Icon(Icons.edit),
+            onPressed: () {
+              Navigator.of(context).push(new MaterialPageRoute<Null>(
+                builder: (BuildContext context) {
+                  return new Scaffold(
+                    appBar: new AppBar(title: new Text('Edit profile')),
+                    body: new Center(
+                      child: new Icon(Icons.face),
+                    ),
+                  );
+                },
+              ));
+            }),
+        new IconButton(
+            icon: new Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).push(new MaterialPageRoute<Null>(
+                builder: (BuildContext context) {
+                  return new Scaffold(
+                    appBar: new AppBar(title: new Text('Create event')),
+                    body: new Center(
+                      child: new Icon(Icons.calendar_view_day),
+                    ),
+                  );
+                },
+              ));
+            }),
+      ],
+    );
   }
 }
 

@@ -6,9 +6,9 @@ class Created extends StatelessWidget  {
     return new Container(
       child: new Center(
         child: new Icon(
-          Icons.arrow_downward, 
+          Icons.face, 
           size: 150.0, 
-          color: Colors.green
+          color: Colors.black
         )
       )
     );
