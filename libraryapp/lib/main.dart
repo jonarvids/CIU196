@@ -3,12 +3,10 @@ import './profile.dart' as first;
 import './matches.dart' as second;
 import './events.dart' as third;
 import './edit_profile.dart' as edit_profile;
+import './create_event.dart' as create_event;
 
 void main() {
-  runApp(new MaterialApp(home: new Tabs(), routes: <String, WidgetBuilder>{
-    '/edit_profile': (BuildContext context) =>
-        new edit_profile.EditProfile(title: "Edit profile")
-  }));
+  runApp(new MaterialApp(home: new Tabs()));
 }
 
 class Tabs extends StatefulWidget {
@@ -70,29 +68,17 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
             icon: new Icon(Icons.edit),
             onPressed: () {
               Navigator.of(context).push(new MaterialPageRoute<Null>(
-                builder: (BuildContext context) {
-                  return new Scaffold(
-                    appBar: new AppBar(title: new Text('Edit profile')),
-                    body: new Center(
-                      child: new Icon(Icons.face),
-                    ),
-                  );
-                },
-              ));
+                    builder: (BuildContext context) =>
+                        new edit_profile.EditProfile(),
+                  ));
             }),
         new IconButton(
             icon: new Icon(Icons.add),
             onPressed: () {
               Navigator.of(context).push(new MaterialPageRoute<Null>(
-                builder: (BuildContext context) {
-                  return new Scaffold(
-                    appBar: new AppBar(title: new Text('Create event')),
-                    body: new Center(
-                      child: new Icon(Icons.calendar_view_day),
-                    ),
-                  );
-                },
-              ));
+                    builder: (BuildContext context) =>
+                        new create_event.CreateEvent(),
+                  ));
             }),
       ],
     );

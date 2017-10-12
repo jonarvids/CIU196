@@ -10,7 +10,6 @@ class Events extends StatefulWidget {
 }
 
 class TabsState extends State<Events> with SingleTickerProviderStateMixin {
-
   TabController controller;
 
   @override
@@ -19,46 +18,29 @@ class TabsState extends State<Events> with SingleTickerProviderStateMixin {
     controller = new TabController(vsync: this, length: 4);
   }
 
- @override
- void dispose() {
-   controller.dispose();
-   super.dispose();
- }
-
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Test"),
-          backgroundColor: Colors.green,
-          bottom: new TabBar(
-            controller: controller,
-            tabs: <Tab>[
-              new Tab(
-                text:"Upcoming"
-              ),
-              new Tab(
-                text:"Interested"
-              ),
-              new Tab(
-                text:"Past"
-              ),
-              new Tab(
-                text:"Created"
-              )
-            ]
-          )
-        ),
-        body: new TabBarView(
-          controller: controller,
-          children: <Widget> [
-            new first.Upcoming(),
-            new second.Interested(),
-            new third.Past(),
-            new fourth.Created()
-          ]
-        )
-    );
+            title: new Text("Test"),
+            backgroundColor: Colors.green,
+            bottom: new TabBar(controller: controller, tabs: <Tab>[
+              new Tab(text: "Upcoming"),
+              new Tab(text: "Interested"),
+              new Tab(text: "Past"),
+              new Tab(text: "Created")
+            ])),
+        body: new TabBarView(controller: controller, children: <Widget>[
+          new first.Upcoming(),
+          new second.Interested(),
+          new third.Past(),
+          new fourth.Created()
+        ]));
   }
 }
