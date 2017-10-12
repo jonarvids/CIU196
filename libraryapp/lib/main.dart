@@ -49,7 +49,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
               new Tab(icon: new Icon(choices[1].icon), text: choices[1].title),
               new Tab(icon: new Icon(choices[2].icon), text: choices[2].title)
             ])),
-        body: new TabBarView(controller: controller, children: <Widget>[
+        body: new TabBarView(controller: controller, physics: new NeverScrollableScrollPhysics(), children: <Widget>[
           new first.Profile(),
           new second.Matches(),
           new third.Events()
