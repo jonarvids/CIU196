@@ -8,12 +8,16 @@ class Matches extends StatelessWidget {
 
   Widget buildAppBar(BuildContext context) {
     return new AppBar(
-        title: new Text("Matches"),
-        centerTitle: true,
-        backgroundColor: Colors.green);
+      title: new Text("Matches"),
+      centerTitle: true,
+    );
   }
 
   Widget buildBody(BuildContext context) {
-    return new Container(child: new Center(child: new Text("MATCH BODY")));
+    return new Container(
+      child: new Center(
+        child: new Text("MATCH BODY"),
+      ),
+    );
   }
 }
