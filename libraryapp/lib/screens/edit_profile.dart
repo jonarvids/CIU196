@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'dart:async';
-
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 
 class EditProfile extends StatefulWidget {
@@ -17,6 +18,7 @@ class ProfileData {
 class EditProfileState extends State<EditProfile> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   ProfileData profile = new ProfileData();
+  File imageFile;
   bool formWasEdited = false, autoValidate = false;
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final TextEditingController nameController = new TextEditingController();
@@ -27,6 +29,13 @@ class EditProfileState extends State<EditProfile> {
   void showInSnackBar(BuildContext context, String value) {
     scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(value)));
+  }
+
+  getImage() async {
+    var fileName = await ImagePicker.pickImage();
+    setState(() {
+      imageFile = fileName;
+    });
   }
 
   void handleSubmittedData() {
@@ -129,7 +138,67 @@ class EditProfileState extends State<EditProfile> {
   }
 
   Widget buildContent(BuildContext context) {
-    Widget pictureSection = new Container();
+    Widget pictureSection = new Container(
+      child: new Column(
+        children: <Widget>[
+          new Container(
+            margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+            child: new Center(
+              child: new Column(
+                children: [
+                  new ClipOval(
+                    child: imageFile == null
+                        ? new Container(
+                            alignment: Alignment.center,
+                            color: Colors.blueGrey,
+                            width: 150.0,
+                            height: 150.0,
+                            child: new IconButton(
+                              icon: new Icon(
+                                Icons.add_a_photo,
+                                color: Colors.white,
+                              ),
+                              onPressed: getImage,
+                            ),
+                          )
+                        : new Container(
+                            alignment: Alignment.center,
+                            width: 150.0,
+                            height: 150.0,
+                            child: new IconButton(
+                              icon: new Icon(
+                                Icons.add_a_photo,
+                                color: Colors.white,
+                              ),
+                              onPressed: getImage,
+                            ),
+                            decoration: new BoxDecoration(
+                              image: new DecorationImage(
+                                fit: BoxFit.cover,
+                                image: new FileImage(
+                                  imageFile,
+                                  scale: 0.25,
+                                ),
+                              ),
+                            ),
+                          ),
+                  ),
+                  new Container(
+                    margin: const EdgeInsets.only(top: 16.0),
+                    child: new Text(
+                      "Tap to update your profile picture",
+                      style: new TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
 
     Widget textSection = new Form(
       key: formKey,
@@ -183,61 +252,193 @@ class EditProfileState extends State<EditProfile> {
                 margin: const EdgeInsets.only(top: 16.0),
                 child: new Text("Interests **"),
               ),
-              new Row(
-                children: [
-                  new RaisedButton(
-                    color: Colors.red,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                  new RaisedButton(
-                    color: Colors.yellow,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                  new RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                  new RaisedButton(
-                    color: Colors.green,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                ],
+              new Center(
+                child: new Row(
+                  children: [
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.palette),
+                            iconSize: 30.0,
+                            color: Colors.red,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Art & Music",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.computer),
+                            iconSize: 30.0,
+                            color: Colors.green,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Apps & Internet",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.local_library),
+                            iconSize: 30.0,
+                            color: Colors.brown,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Book circles",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.movie),
+                            iconSize: 30.0,
+                            color: Colors.blue,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Film",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              new Row(
-                children: [
-                  new RaisedButton(
-                    color: Colors.orange,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                  new RaisedButton(
-                    color: Colors.cyan,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                  new RaisedButton(
-                    color: Colors.purple,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                  new RaisedButton(
-                    color: Colors.brown,
-                    onPressed: () {
-                      null;
-                    },
-                  ),
-                ],
+              new Center(
+                child: new Row(
+                  children: [
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.palette),
+                            iconSize: 30.0,
+                            color: Colors.red,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Art & Music",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.palette),
+                            iconSize: 30.0,
+                            color: Colors.red,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Art & Music",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.palette),
+                            iconSize: 30.0,
+                            color: Colors.red,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Art & Music",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    new Container(
+                      margin: const EdgeInsets.all(16.0),
+                      child: new Column(
+                        children: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.palette),
+                            iconSize: 30.0,
+                            color: Colors.red,
+                            onPressed: () {
+                              null;
+                            },
+                          ),
+                          new Text(
+                            "Art & Music",
+                            style: new TextStyle(
+                              color: Colors.grey,
+                              fontSize: 11.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -262,22 +463,22 @@ class EditProfileState extends State<EditProfile> {
     );
 
     ListView contentList = new ListView(
+      padding: const EdgeInsets.all(16.0),
       children: [
         pictureSection,
         textSection,
         interestsSection,
+        footerSection,
       ],
     );
 
     return new Container(
-      padding: const EdgeInsets.all(16.0),
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           new Expanded(
             child: contentList,
           ),
-          footerSection
         ],
       ),
     );

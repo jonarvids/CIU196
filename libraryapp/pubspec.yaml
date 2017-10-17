@@ -2,6 +2,7 @@ name: libraryapp
 description: A new Flutter project.
 
 dependencies:
+  image_picker: "^0.1.1"
   flutter:
     sdk: flutter
 
