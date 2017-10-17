@@ -3,6 +3,10 @@ import "package:flutter/material.dart";
 class Created extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Container(child: new Center(child: new Text("CREATED")));
+    return new Container(
+      child: new Center(
+        child: new Text("CREATED"),
+      ),
+    );
   }
 }

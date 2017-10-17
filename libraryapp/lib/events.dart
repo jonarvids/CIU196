@@ -34,7 +34,6 @@ class TabsState extends State<Events> with SingleTickerProviderStateMixin {
     return new AppBar(
         title: new Text("Events"),
         centerTitle: true,
-        backgroundColor: Colors.green,
         actions: <Widget>[
           new IconButton(
               icon: new Icon(Icons.add),
