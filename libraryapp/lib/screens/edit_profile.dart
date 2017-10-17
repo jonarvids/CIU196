@@ -26,6 +26,15 @@ class EditProfileState extends State<EditProfile> {
       new TextEditingController();
   final TextEditingController ageController = new TextEditingController();
 
+  bool artToggle = false,
+      bookToggle = false,
+      cultureToggle = false,
+      poetryToggle = false,
+      appsToggle = false,
+      filmToggle = false,
+      natureToggle = false,
+      languageToggle = false;
+
   void showInSnackBar(BuildContext context, String value) {
     scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(value)));
@@ -44,6 +53,8 @@ class EditProfileState extends State<EditProfile> {
       autoValidate = true;
       showInSnackBar(context,
           "Could not update profile. Fix errors in red and try again.");
+    } else if(!(artToggle || bookToggle || cultureToggle || poetryToggle || appsToggle || filmToggle || natureToggle || languageToggle)) {
+      showInSnackBar(context, "At least one interest is required");
     } else {
       showInSnackBar(context, "Profile updated");
       form.save();
@@ -150,7 +161,7 @@ class EditProfileState extends State<EditProfile> {
                     child: imageFile == null
                         ? new Container(
                             alignment: Alignment.center,
-                            color: Colors.blueGrey,
+                            color: Theme.of(context).disabledColor,
                             width: 150.0,
                             height: 150.0,
                             child: new IconButton(
@@ -188,7 +199,7 @@ class EditProfileState extends State<EditProfile> {
                     child: new Text(
                       "Tap to update your profile picture",
                       style: new TextStyle(
-                        color: Colors.grey,
+                        color: Theme.of(context).disabledColor,
                       ),
                     ),
                   )
@@ -250,195 +261,233 @@ class EditProfileState extends State<EditProfile> {
             children: [
               new Container(
                 margin: const EdgeInsets.only(top: 16.0),
-                child: new Text("Interests **"),
-              ),
-              new Center(
-                child: new Row(
-                  children: [
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.palette),
-                            iconSize: 30.0,
-                            color: Colors.red,
-                            onPressed: () {
-                              null;
-                            },
-                          ),
-                          new Text(
-                            "Art & Music",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.computer),
-                            iconSize: 30.0,
-                            color: Colors.green,
-                            onPressed: () {
-                              null;
-                            },
-                          ),
-                          new Text(
-                            "Apps & Internet",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.local_library),
-                            iconSize: 30.0,
-                            color: Colors.brown,
-                            onPressed: () {
-                              null;
-                            },
-                          ),
-                          new Text(
-                            "Book circles",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.movie),
-                            iconSize: 30.0,
-                            color: Colors.blue,
-                            onPressed: () {
-                              null;
-                            },
-                          ),
-                          new Text(
-                            "Film",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                child: new Text(
+                  "Interests **",
+                  style: new TextStyle(color: Theme.of(context).primaryColor),
                 ),
               ),
-              new Center(
-                child: new Row(
-                  children: [
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.palette),
-                            iconSize: 30.0,
-                            color: Colors.red,
-                            onPressed: () {
-                              null;
-                            },
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.palette),
+                                iconSize: 30.0,
+                                color: artToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(() => artToggle = !artToggle);
+                                },
+                              ),
+                              new Text(
+                                "Art & Music",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                          new Text(
-                            "Art & Music",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.computer),
+                                iconSize: 30.0,
+                                color: appsToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(() => appsToggle = !appsToggle);
+                                },
+                              ),
+                              new Text(
+                                "Apps & Internet",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.palette),
-                            iconSize: 30.0,
-                            color: Colors.red,
-                            onPressed: () {
-                              null;
-                            },
+                  ),
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.local_library),
+                                iconSize: 30.0,
+                                color: bookToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(() => bookToggle = !bookToggle);
+                                },
+                              ),
+                              new Text(
+                                "Book circles",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                          new Text(
-                            "Art & Music",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.movie),
+                                iconSize: 30.0,
+                                color: filmToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(() => filmToggle = !filmToggle);
+                                },
+                              ),
+                              new Text(
+                                "Film",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.palette),
-                            iconSize: 30.0,
-                            color: Colors.red,
-                            onPressed: () {
-                              null;
-                            },
+                  ),
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.school),
+                                iconSize: 30.0,
+                                color: cultureToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(
+                                      () => cultureToggle = !cultureToggle);
+                                },
+                              ),
+                              new Text(
+                                "Culture & Education",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                          new Text(
-                            "Art & Music",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.nature_people),
+                                iconSize: 30.0,
+                                color: natureToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(() => natureToggle = !natureToggle);
+                                },
+                              ),
+                              new Text(
+                                "Nature & Society",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    new Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: new Column(
-                        children: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.palette),
-                            iconSize: 30.0,
-                            color: Colors.red,
-                            onPressed: () {
-                              null;
-                            },
+                  ),
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.edit),
+                                iconSize: 30.0,
+                                color: poetryToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(() => poetryToggle = !poetryToggle);
+                                },
+                              ),
+                              new Text(
+                                "Poetry & Prose",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                          new Text(
-                            "Art & Music",
-                            style: new TextStyle(
-                              color: Colors.grey,
-                              fontSize: 11.0,
-                            ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.language),
+                                iconSize: 30.0,
+                                color: languageToggle
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).disabledColor,
+                                onPressed: () {
+                                  setState(
+                                      () => languageToggle = !languageToggle);
+                                },
+                              ),
+                              new Text(
+                                "Laguage",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -455,9 +504,15 @@ class EditProfileState extends State<EditProfile> {
             margin: const EdgeInsets.only(
               bottom: 8.0,
             ),
-            child: new Text("* Required"),
+            child: new Text(
+              "* Required",
+              style: new TextStyle(color: Theme.of(context).primaryColor),
+            ),
           ),
-          new Text("** One or more is required"),
+          new Text(
+            "** At least one is required",
+            style: new TextStyle(color: Theme.of(context).primaryColor),
+          ),
         ],
       ),
     );
