@@ -13,6 +13,8 @@ class ProfileData {
   String name = "John Johnsson";
   String occupation = "Blacksmith";
   String year = "1901";
+  String description =
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 }
 
 class EditProfileState extends State<EditProfile> {
@@ -26,10 +28,10 @@ class EditProfileState extends State<EditProfile> {
       new TextEditingController();
   final TextEditingController ageController = new TextEditingController();
 
-  bool artToggle = false,
+  bool artToggle = true,
       bookToggle = false,
-      cultureToggle = false,
-      poetryToggle = false,
+      cultureToggle = true,
+      poetryToggle = true,
       appsToggle = false,
       filmToggle = false,
       natureToggle = false,
@@ -240,7 +242,7 @@ class EditProfileState extends State<EditProfile> {
             onSaved: (String value) {
               profile.name = value;
             },
-            controller: nameController,
+            initialValue: profile.name == "" ? null : profile.name,
             validator: validateName,
           ),
           new TextFormField(
@@ -252,7 +254,7 @@ class EditProfileState extends State<EditProfile> {
             onSaved: (String value) {
               profile.occupation = value;
             },
-            controller: occupationController,
+            initialValue: profile.occupation == "" ? null : profile.occupation,
             validator: validateOccupation,
           ),
           new TextFormField(
@@ -260,12 +262,12 @@ class EditProfileState extends State<EditProfile> {
             decoration: new InputDecoration(
                 icon: new Icon(Icons.cake),
                 hintText: "YYYY",
-                labelText: "Age *"),
+                labelText: "Year of birth *"),
             keyboardType: TextInputType.phone,
             onSaved: (String value) {
               profile.year = value;
             },
-            controller: ageController,
+            initialValue: profile.year == "" ? null : profile.year,
             validator: validateYear,
           ),
         ],
