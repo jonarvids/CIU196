@@ -14,9 +14,16 @@ class Matches extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
-    return new Container(
-      child: new Center(
-        child: new Text("MATCH BODY"),
+    return new Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: new Dismissible(
+        key: new ObjectKey("yo"),
+        child: new Card(
+          color: Colors.white,
+          child: new Center(
+            child: new Text("MATCH BODY"),
+          ),
+        ),
       ),
     );
   }
