@@ -13,6 +13,8 @@ class ProfileData {
   String name = "John Johnsson";
   String occupation = "Blacksmith";
   String year = "1901";
+  String description =
+      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 }
 
 class EditProfileState extends State<EditProfile> {
@@ -26,10 +28,10 @@ class EditProfileState extends State<EditProfile> {
       new TextEditingController();
   final TextEditingController ageController = new TextEditingController();
 
-  bool artToggle = false,
+  bool artToggle = true,
       bookToggle = false,
-      cultureToggle = false,
-      poetryToggle = false,
+      cultureToggle = true,
+      poetryToggle = true,
       appsToggle = false,
       filmToggle = false,
       natureToggle = false,
@@ -53,7 +55,14 @@ class EditProfileState extends State<EditProfile> {
       autoValidate = true;
       showInSnackBar(context,
           "Could not update profile. Fix errors in red and try again.");
-    } else if(!(artToggle || bookToggle || cultureToggle || poetryToggle || appsToggle || filmToggle || natureToggle || languageToggle)) {
+    } else if (!(artToggle ||
+        bookToggle ||
+        cultureToggle ||
+        poetryToggle ||
+        appsToggle ||
+        filmToggle ||
+        natureToggle ||
+        languageToggle)) {
       showInSnackBar(context, "At least one interest is required");
     } else {
       showInSnackBar(context, "Profile updated");
@@ -153,7 +162,6 @@ class EditProfileState extends State<EditProfile> {
       child: new Column(
         children: <Widget>[
           new Container(
-            margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
             child: new Center(
               child: new Column(
                 children: [
@@ -162,8 +170,8 @@ class EditProfileState extends State<EditProfile> {
                         ? new Container(
                             alignment: Alignment.center,
                             color: Theme.of(context).disabledColor,
-                            width: 150.0,
-                            height: 150.0,
+                            width: 100.0,
+                            height: 100.0,
                             child: new IconButton(
                               icon: new Icon(
                                 Icons.add_a_photo,
@@ -174,8 +182,8 @@ class EditProfileState extends State<EditProfile> {
                           )
                         : new Container(
                             alignment: Alignment.center,
-                            width: 150.0,
-                            height: 150.0,
+                            width: 100.0,
+                            height: 100.0,
                             child: new IconButton(
                               icon: new Icon(
                                 Icons.add_a_photo,
@@ -195,7 +203,7 @@ class EditProfileState extends State<EditProfile> {
                           ),
                   ),
                   new Container(
-                    margin: const EdgeInsets.only(top: 16.0),
+                    margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
                     child: new Text(
                       "Tap to update your profile picture",
                       style: new TextStyle(
@@ -216,36 +224,50 @@ class EditProfileState extends State<EditProfile> {
       autovalidate: autoValidate,
       onWillPop: warnUserAboutInvalidData,
       child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          new Container(
+            margin: const EdgeInsets.only(top: 16.0),
+            child: new Text(
+              "Information",
+              style: new TextStyle(color: Theme.of(context).primaryColor),
+            ),
+          ),
           new TextFormField(
             autocorrect: false,
             decoration: new InputDecoration(
-                hintText: "Enter your name", labelText: "Name *"),
+                icon: new Icon(Icons.person),
+                hintText: "Enter your name",
+                labelText: "Name *"),
             onSaved: (String value) {
               profile.name = value;
             },
-            controller: nameController,
+            initialValue: profile.name == "" ? null : profile.name,
             validator: validateName,
           ),
           new TextFormField(
             autocorrect: false,
             decoration: new InputDecoration(
-                hintText: "Enter your occupation", labelText: "Occupation *"),
+                icon: new Icon(Icons.work),
+                hintText: "Enter your occupation",
+                labelText: "Occupation *"),
             onSaved: (String value) {
               profile.occupation = value;
             },
-            controller: occupationController,
+            initialValue: profile.occupation == "" ? null : profile.occupation,
             validator: validateOccupation,
           ),
           new TextFormField(
             autocorrect: false,
-            decoration:
-                new InputDecoration(hintText: "YYYY", labelText: "Age *"),
+            decoration: new InputDecoration(
+                icon: new Icon(Icons.cake),
+                hintText: "YYYY",
+                labelText: "Year of birth *"),
             keyboardType: TextInputType.phone,
             onSaved: (String value) {
               profile.year = value;
             },
-            controller: ageController,
+            initialValue: profile.year == "" ? null : profile.year,
             validator: validateYear,
           ),
         ],
@@ -517,7 +539,7 @@ class EditProfileState extends State<EditProfile> {
       ),
     );
 
-    ListView contentList = new ListView(
+    return new ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
         pictureSection,
@@ -525,17 +547,6 @@ class EditProfileState extends State<EditProfile> {
         interestsSection,
         footerSection,
       ],
-    );
-
-    return new Container(
-      child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          new Expanded(
-            child: contentList,
-          ),
-        ],
-      ),
     );
   }
 }
