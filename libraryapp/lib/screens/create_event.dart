@@ -43,6 +43,7 @@ class CreateEventState extends State<CreateEvent> {
   bool _formWasEdited = false;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
+
   void showInSnackBar(String value) {
     _scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(value)));
@@ -148,7 +149,7 @@ class CreateEventState extends State<CreateEvent> {
               ),
             ),
             new Container(
-              margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+              margin: const EdgeInsets.only(top: 8.0),
               child: new Text(
                 "Tap to update the event banner",
                 style: new TextStyle(
@@ -162,7 +163,7 @@ class CreateEventState extends State<CreateEvent> {
   }
 
   Widget formSection(BuildContext context) {
-    return new Form(
+    return wrapWithPadding( new Form(
         key: _formKey,
         autovalidate: _autovalidate,
         onWillPop: _warnUserAboutInvalidData,
@@ -191,15 +192,15 @@ class CreateEventState extends State<CreateEvent> {
               ),
             ]
         )
+    )
     );
   }
 
   Widget dateSection(BuildContext context) {
-    return new Container(
-      child: new Column(
+    return wrapWithPadding(new Column(
           children: <Widget>[
             new _DateTimePicker(
-              labelText: 'Time and Date',
+              labelText: 'Date & Time',
               selectedDate: event._fromDate,
               selectedTime: event._fromTime,
               selectDate: (DateTime date) {
@@ -219,8 +220,7 @@ class CreateEventState extends State<CreateEvent> {
   }
 
   Widget themeSection(BuildContext context) {
-    return new Container(
-      child: new Column(
+    return wrapWithPadding( new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           new Column(
@@ -229,7 +229,7 @@ class CreateEventState extends State<CreateEvent> {
               new Container(
                 margin: const EdgeInsets.only(top: 16.0),
                 child: new Text(
-                  "Event themes **",
+                  "Event theme **",
                   style: new TextStyle(color: Theme.of(context).primaryColor),
                 ),
               ),
@@ -429,6 +429,28 @@ class CreateEventState extends State<CreateEvent> {
     );
   }
 
+  Widget footerSection(BuildContext context) {
+   return wrapWithPadding( new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          new Container(
+            margin: const EdgeInsets.only(
+              bottom: 8.0,
+            ),
+            child: new Text(
+              "* Required",
+              style: new TextStyle(color: Theme.of(context).primaryColor),
+            ),
+          ),
+          new Text(
+            "** At least one is required",
+            style: new TextStyle(color: Theme.of(context).primaryColor),
+          ),
+        ],
+      ),
+    );
+  }
+
   //MARK: Theme selection
 
   Color setEventTheme(EventTheme theme, BuildContext context) {
@@ -442,6 +464,7 @@ class CreateEventState extends State<CreateEvent> {
       () => theme.isToggled = !theme.isToggled);
     };
   }
+
   //MARK: Build Screen
   @override
   Widget build(BuildContext context) {
@@ -452,17 +475,27 @@ class CreateEventState extends State<CreateEvent> {
 
   Widget _buildContent(BuildContext context) {
     return new ListView(
-      padding: const EdgeInsets.all(16.0),
       children: [
         eventImageSection(context),
-        dateSection(context),
         formSection(context),
-        themeSection(context)
+        dateSection(context),
+        themeSection(context),
+        footerSection(context)
       ],
     );
   }
 }
+//Mark: Helpers
+EdgeInsets appInset() {
+  return const EdgeInsets.all(16.0);
+}
 
+Container wrapWithPadding(Widget widget) {
+  return new Container(
+      padding: appInset(),
+      child: widget
+  );
+}
 //Mark: Date Picker Demo Code
 //[https://github.com/flutter/flutter/blob/master/examples/flutter_gallery/lib/demo/material/date_and_time_picker_demo.dart]
 
@@ -543,7 +576,7 @@ class _DateTimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.title;
+    final TextStyle valueStyle = Theme.of(context).textTheme.body2;
     return new Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
