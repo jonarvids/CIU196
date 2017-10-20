@@ -1,10 +1,13 @@
 import "package:flutter/material.dart";
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 
 class CreateEvent extends StatefulWidget {
+  static const String routeName = '/material/date-and-time-pickers';
+
   @override
   createState() => new CreateEventState();
 }
@@ -12,13 +15,14 @@ class CreateEvent extends StatefulWidget {
 class EventData {
   String description = '';
   String title = '';
+  DateTime _fromDate = new DateTime.now();
+  TimeOfDay _fromTime = const TimeOfDay(hour: 18, minute: 0);
   File imageFile;
 }
 
 class CreateEventState extends State<CreateEvent> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   EventData event = new EventData();
-
   //MARK: Form preamble
   bool _autovalidate = false;
   bool _formWasEdited = false;
@@ -88,7 +92,7 @@ class CreateEventState extends State<CreateEvent> {
   }
 
   //MARK: User Interface
-  Widget eventImageSection() {
+  Widget eventImageSection(BuildContext context) {
     return new Container(
       child: new Column(
         children: <Widget>[
@@ -152,7 +156,7 @@ class CreateEventState extends State<CreateEvent> {
     );
   }
 
-  Widget formSection() {
+  Widget formSection(BuildContext context) {
     return new Form(
         key: _formKey,
         autovalidate: _autovalidate,
@@ -182,14 +186,6 @@ class CreateEventState extends State<CreateEvent> {
                 //TODO: No validator yet.
               ),
               new Container(
-                padding: const EdgeInsets.all(20.0),
-                //       Unclear     alignment: Alignment.center ,
-                child: new RaisedButton(
-                  child: const Text('SUBMIT'),
-                  onPressed: _handleSubmitted,
-                ),
-              ),
-              new Container(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: new Text('* indicates required field', style: Theme
                     .of(context)
@@ -198,6 +194,30 @@ class CreateEventState extends State<CreateEvent> {
               ),
             ]
         )
+    );
+  }
+
+  Widget dateSection(BuildContext context) {
+    return new Container(
+      child: new Column(
+          children: <Widget>[
+            new _DateTimePicker(
+              labelText: 'Time and Date',
+              selectedDate: event._fromDate,
+              selectedTime: event._fromTime,
+              selectDate: (DateTime date) {
+                setState(() {
+                  event._fromDate = date;
+                });
+              },
+              selectTime: (TimeOfDay time) {
+                setState(() {
+                  event._fromTime = time;
+                });
+              },
+            )
+          ]
+      )
     );
   }
 
@@ -213,8 +233,116 @@ class CreateEventState extends State<CreateEvent> {
     return new ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
-        eventImageSection(),
-        formSection()
+        eventImageSection(context),
+        dateSection(context),
+        formSection(context)
+      ],
+    );
+  }
+}
+
+//Mark: Date Picker Demo Code
+//[https://github.com/flutter/flutter/blob/master/examples/flutter_gallery/lib/demo/material/date_and_time_picker_demo.dart]
+
+class _InputDropdown extends StatelessWidget {
+  const _InputDropdown({
+    Key key,
+    this.child,
+    this.labelText,
+    this.valueText,
+    this.valueStyle,
+    this.onPressed }) : super(key: key);
+
+  final String labelText;
+  final String valueText;
+  final TextStyle valueStyle;
+  final VoidCallback onPressed;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return new InkWell(
+      onTap: onPressed,
+      child: new InputDecorator(
+        decoration: new InputDecoration(
+          labelText: labelText,
+        ),
+        baseStyle: valueStyle,
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            new Text(valueText, style: valueStyle),
+            new Icon(Icons.arrow_drop_down,
+                color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade700 : Colors.white70
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DateTimePicker extends StatelessWidget {
+  const _DateTimePicker({
+    Key key,
+    this.labelText,
+    this.selectedDate,
+    this.selectedTime,
+    this.selectDate,
+    this.selectTime
+  }) : super(key: key);
+
+  final String labelText;
+  final DateTime selectedDate;
+  final TimeOfDay selectedTime;
+  final ValueChanged<DateTime> selectDate;
+  final ValueChanged<TimeOfDay> selectTime;
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: new DateTime(2015, 8),
+        lastDate: new DateTime(2101)
+    );
+    if (picked != null && picked != selectedDate)
+      selectDate(picked);
+  }
+
+  Future<Null> _selectTime(BuildContext context) async {
+    final TimeOfDay picked = await showTimePicker(
+        context: context,
+        initialTime: selectedTime
+    );
+    if (picked != null && picked != selectedTime)
+      selectTime(picked);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final TextStyle valueStyle = Theme.of(context).textTheme.title;
+    return new Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        new Expanded(
+          flex: 4,
+          child: new _InputDropdown(
+            labelText: labelText,
+            valueText: new DateFormat.yMMMd().format(selectedDate),
+            valueStyle: valueStyle,
+            onPressed: () { _selectDate(context); },
+          ),
+        ),
+        const SizedBox(width: 12.0),
+        new Expanded(
+          flex: 3,
+          child: new _InputDropdown(
+            valueText: selectedTime.format(context),
+            valueStyle: valueStyle,
+            onPressed: () { _selectTime(context); },
+          ),
+        ),
       ],
     );
   }
