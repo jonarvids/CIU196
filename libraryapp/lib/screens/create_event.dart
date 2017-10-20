@@ -94,65 +94,55 @@ class CreateEventState extends State<CreateEvent> {
   //MARK: User Interface
   Widget eventImageSection(BuildContext context) {
     return new Container(
-      child: new Column(
-        children: <Widget>[
-          new Container(
-            margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
-            child: new Center(
-              child: new Column(
-                children: [
-                  new ClipOval(
-                    child: event.imageFile == null
-                        ? new Container(
-                            // alignment: Alignment.center,
-                            color: Colors.blueGrey,
-                            width: 150.0,
-                            height: 150.0,
-                            child: new IconButton(
-                              icon: new Icon(
-                                Icons.add_a_photo,
-                                color: Colors.white,
-                              ),
-                              onPressed: getImage,
-                            ),
-                          )
-                        : new Container(
-                            //  alignment: Alignment.center,
-                            width: 150.0,
-                            height: 150.0,
-                            child: new IconButton(
-                              icon: new Icon(
-                                Icons.add_a_photo,
-                                color: Colors.white,
-                              ),
-                              onPressed: getImage,
-                            ),
-                            decoration: new BoxDecoration(
-                              image: new DecorationImage(
-                                fit: BoxFit.cover,
-                                image: new FileImage(
-                                  event.imageFile,
-                                  scale: 0.25,
-                                ),
-                              ),
-                            ),
-                          ),
+        child: new Column(
+          children: <Widget>[
+            new ClipRect(
+              child: event.imageFile == null
+                  ? new Container(
+                alignment: Alignment.center,
+                color: Theme.of(context).disabledColor,
+                height: 150.0,
+                child: new IconButton(
+                  padding: const EdgeInsets.only(left: 100.0, right: 100.0, bottom: 40.0,top: 40.0),
+                  icon: new Icon(
+                    Icons.add_a_photo,
+                    color: Colors.white,
                   ),
-                  new Container(
-                    margin: const EdgeInsets.only(top: 16.0),
-                    child: new Text(
-                      "Tap to update your event banner",
-                      style: new TextStyle(
-                        color: Colors.grey,
-                      ),
+                  onPressed: getImage,
+                ),
+              )
+                  : new Container(
+                alignment: Alignment.center,
+                child: new IconButton(
+                  padding: const EdgeInsets.only(left: 200.0, right: 200.0, bottom: 40.0,top: 40.0),
+                  icon: new Icon(
+                    Icons.add_a_photo,
+                    color: Colors.white,
+                  ),
+                  onPressed: getImage,
+                ),
+                decoration: new BoxDecoration(
+                  image: new DecorationImage(
+                    fit: BoxFit.cover,
+                    image: new FileImage(
+                      event.imageFile,
+                      scale: 0.25,
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+            new Container(
+              margin: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+              child: new Text(
+                "Tap to update the event banner",
+                style: new TextStyle(
+                  color: Theme.of(context).disabledColor,
+                ),
+              ),
+            )
+          ],
+        )
     );
   }
 
