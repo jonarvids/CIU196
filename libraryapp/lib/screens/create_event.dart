@@ -469,7 +469,16 @@ class CreateEventState extends State<CreateEvent> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(title: new Text('Create event'), centerTitle: true),
+        appBar: new AppBar(
+            title: new Text('Create event'),
+            centerTitle: true,
+            actions: <Widget>[
+              new IconButton(
+                icon: new Icon(Icons.check),
+                onPressed: _handleSubmitted,
+              )
+            ],
+        ),
         body: _buildContent(context));
   }
 
@@ -485,6 +494,7 @@ class CreateEventState extends State<CreateEvent> {
     );
   }
 }
+
 //Mark: Helpers
 EdgeInsets appInset() {
   return const EdgeInsets.all(16.0);
