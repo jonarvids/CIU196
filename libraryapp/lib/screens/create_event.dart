@@ -11,13 +11,28 @@ class CreateEvent extends StatefulWidget {
   @override
   createState() => new CreateEventState();
 }
+class EventTheme {
+  bool isToggled;
 
+  EventTheme(bool isToggled) {
+    this.isToggled = isToggled;
+  }
+
+}
 class EventData {
   String description = '';
   String title = '';
   DateTime _fromDate = new DateTime.now();
   TimeOfDay _fromTime = const TimeOfDay(hour: 18, minute: 0);
   File imageFile;
+  EventTheme artTheme = new EventTheme(false);
+  EventTheme bookTheme = new EventTheme(false);
+  EventTheme cultureTheme = new EventTheme(false);
+  EventTheme poetryTheme = new EventTheme(false);
+  EventTheme appsTheme = new EventTheme(false);
+  EventTheme filmTheme = new EventTheme(false);
+  EventTheme natureTheme = new EventTheme(false);
+  EventTheme languageTheme = new EventTheme(false);
 }
 
 class CreateEventState extends State<CreateEvent> {
@@ -166,21 +181,13 @@ class CreateEventState extends State<CreateEvent> {
               new TextFormField(
                   decoration: const InputDecoration(
                     hintText: 'What is this event about?',
-                    helperText: 'Make it flavorful!',
-                    labelText: 'About *',
+                    labelText: 'Description *',
                   ),
-                  maxLines: 10,
+                  maxLines: 5,
                   onSaved: (String value) {
                     event.description = value;
                   }
                 //TODO: No validator yet.
-              ),
-              new Container(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: new Text('* indicates required field', style: Theme
-                    .of(context)
-                    .textTheme
-                    .caption),
               ),
             ]
         )
@@ -211,6 +218,230 @@ class CreateEventState extends State<CreateEvent> {
     );
   }
 
+  Widget themeSection(BuildContext context) {
+    return new Container(
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              new Container(
+                margin: const EdgeInsets.only(top: 16.0),
+                child: new Text(
+                  "Event themes **",
+                  style: new TextStyle(color: Theme.of(context).primaryColor),
+                ),
+              ),
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.palette),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.artTheme, context),
+                                onPressed: toggleTheme(event.artTheme),
+                              ),
+                              new Text(
+                                "Art & Music",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.computer),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.appsTheme, context),
+                                onPressed: toggleTheme(event.appsTheme),
+                              ),
+                              new Text(
+                                "Apps & Internet",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.local_library),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.bookTheme, context),
+                                onPressed: toggleTheme(event.bookTheme),
+                              ),
+                              new Text(
+                                "Book circles",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.movie),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.filmTheme, context),
+                                onPressed: toggleTheme(event.filmTheme),
+                              ),
+                              new Text(
+                                "Film",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.school),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.cultureTheme, context),
+                                onPressed: toggleTheme(event.cultureTheme),
+                              ),
+                              new Text(
+                                "Culture & Education",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.nature_people),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.natureTheme, context),
+                                onPressed: toggleTheme(event.natureTheme),
+                              ),
+                              new Text(
+                                "Nature & Society",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  new Center(
+                    child: new Column(
+                      children: [
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.edit),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.poetryTheme, context),
+                                onPressed: toggleTheme(event.poetryTheme),
+                              ),
+                              new Text(
+                                "Poetry & Prose",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        new Container(
+                          margin: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            children: <Widget>[
+                              new IconButton(
+                                icon: new Icon(Icons.language),
+                                iconSize: 30.0,
+                                color: setEventTheme(event.languageTheme, context),
+                                onPressed: toggleTheme(event.languageTheme),
+                              ),
+                              new Text(
+                                "Laguage",
+                                style: new TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 11.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  //MARK: Theme selection
+
+  Color setEventTheme(EventTheme theme, BuildContext context) {
+    return theme.isToggled
+        ? Theme.of(context).primaryColor
+        : Theme.of(context).disabledColor;
+  }
+
+  VoidCallback toggleTheme(EventTheme theme){
+    return () { setState(
+      () => theme.isToggled = !theme.isToggled);
+    };
+  }
   //MARK: Build Screen
   @override
   Widget build(BuildContext context) {
@@ -225,7 +456,8 @@ class CreateEventState extends State<CreateEvent> {
       children: [
         eventImageSection(context),
         dateSection(context),
-        formSection(context)
+        formSection(context),
+        themeSection(context)
       ],
     );
   }
