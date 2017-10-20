@@ -200,7 +200,7 @@ class CreateEventState extends State<CreateEvent> {
     return wrapWithPadding(new Column(
           children: <Widget>[
             new _DateTimePicker(
-              labelText: 'Date & Time',
+              labelText: 'Date & Time *',
               selectedDate: event._fromDate,
               selectedTime: event._fromTime,
               selectDate: (DateTime date) {
