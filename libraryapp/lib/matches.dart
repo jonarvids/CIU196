@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:collection/collection.dart' show lowerBound;
 import "dart:io";
 import "dart:math";
 
@@ -24,7 +25,7 @@ class EventItem implements Comparable<EventItem> {
   final String description;
   final File imageFile;
 
-    bool artToggle = rand.nextBool(),
+  bool artToggle = rand.nextBool(),
       bookToggle = rand.nextBool(),
       cultureToggle = rand.nextBool(),
       poetryToggle = rand.nextBool(),
@@ -75,12 +76,20 @@ class MatchesState extends State<Matches> {
     }
   }
 
+  void handleUndo(EventItem item) {
+    final int insertionIndex = lowerBound(eventItems, item);
+    setState(() {
+      eventItems.insert(insertionIndex, item);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: buildAppBar(context),
         body: new ListView(
           children: eventItems.map(buildItem).toList(),
+          physics: new NeverScrollableScrollPhysics(),
         ));
   }
 
@@ -104,6 +113,12 @@ class MatchesState extends State<Matches> {
             : "Interested";
         Scaffold.of(context).showSnackBar(new SnackBar(
               content: new Text("$action"),
+              action: new SnackBarAction(
+                label: "UNDO",
+                onPressed: () {
+                  handleUndo(item);
+                },
+              ),
             ));
       },
       child: new Padding(
@@ -134,21 +149,11 @@ class MatchesState extends State<Matches> {
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.all(16.0),
                 child: new Text(
-                  item.title,
+                  "Event Title ${item.index}",
                   textAlign: TextAlign.start,
                   style: new TextStyle(
                     fontSize: 24.0,
-                  ),
-                ),
-              ),
-              new Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                child: new Text(
-                  item.description,
-                  textAlign: TextAlign.start,
-                  style: new TextStyle(
-                    fontSize: 11.0,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -160,11 +165,13 @@ class MatchesState extends State<Matches> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         new Container(
-                          margin: const EdgeInsets.only(top: 16.0, left: 16.0),
+                          margin: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                          ),
                           child: new Text(
-                            "Interests",
-                            style: new TextStyle(
-                                color: Theme.of(context).primaryColor),
+                            item.description,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         new Row(
@@ -412,6 +419,83 @@ class MatchesState extends State<Matches> {
                             ),
                           ],
                         ),
+                        new Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            new Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: new FlatButton(
+                                child: new Icon(
+                                  Icons.block,
+                                  color: Colors.white,
+                                ),
+                                color: Colors.red,
+                                onPressed: () {
+                                  setState(() {
+                                    eventItems.remove(item);
+                                  });
+                                  Scaffold
+                                      .of(context)
+                                      .showSnackBar(new SnackBar(
+                                        content: new Text("Not interested"),
+                                        action: new SnackBarAction(
+                                          label: "UNDO",
+                                          onPressed: () {
+                                            handleUndo(item);
+                                          },
+                                        ),
+                                      ));
+                                },
+                              ),
+                            ),
+                            new Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: new IconButton(
+                                icon: new Icon(
+                                  Icons.info,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                iconSize: 35.0,
+                                onPressed: () {
+                                  setState(() {
+                                    eventItems.remove(item);
+                                  });
+                                  Scaffold
+                                      .of(context)
+                                      .showSnackBar(new SnackBar(
+                                        content: new Text("INFO ABOUT EVENT"),
+                                      ));
+                                },
+                              ),
+                            ),
+                            new Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: new FlatButton(
+                                child: new Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                ),
+                                color: Colors.green,
+                                onPressed: () {
+                                  setState(() {
+                                    eventItems.remove(item);
+                                  });
+                                  Scaffold
+                                      .of(context)
+                                      .showSnackBar(new SnackBar(
+                                        content: new Text("Interested"),
+                                        action: new SnackBarAction(
+                                          label: "UNDO",
+                                          onPressed: () {
+                                            handleUndo(item);
+                                          },
+                                        ),
+                                      ));
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ],
@@ -420,19 +504,6 @@ class MatchesState extends State<Matches> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget buildBody(BuildContext context) {
-    return new Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: new Dismissible(
-        key: new ObjectKey("yo"),
-        child: new Card(),
-        onDismissed: (DismissDirection direction) {
-          setState(() {});
-        },
       ),
     );
   }
