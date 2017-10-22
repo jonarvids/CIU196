@@ -6,8 +6,8 @@ import 'package:libraryapp/data/user_data.dart';
 class EventItem {
   final String title;
   final String description;
-  final DateTime fromDate;
-  final TimeOfDay fromTime;
+  final String fromDate; //Parse into DateTime
+  final TimeOfDay fromTime; //Parse into TimeOfDay
   final File imageFile;
   final List<EventTheme> eventThemes;
 
