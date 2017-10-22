@@ -1,14 +1,18 @@
 import 'dart:async';
 
+import 'dart:io';
+
 class User {
   final String name;
   final String occupation;
   final String year;
   final String description;
+  final File imageFile;
   final List<EventTheme> eventThemes;
 
   const User({
     this.name,
+    this.imageFile,
     this.occupation,
     this.year,
     this.description,
@@ -19,10 +23,10 @@ abstract class UserRepository {
   Future<List<User>> fetch();
 }
 
-class FetchDataException implements Exception {
+class FetchUserDataException implements Exception {
   String _message;
 
-  FetchDataException(this._message);
+  FetchUserDataException(this._message);
 
   String toString() {
     return "Exception: $_message";
