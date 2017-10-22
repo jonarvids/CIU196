@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'dart:io';
+import 'data/theme_names.dart';
 import './screens/edit_profile.dart' as edit_profile;
 
 class Profile extends StatelessWidget {
@@ -175,7 +176,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Art & Music",
+                                ThemeNames.art_music,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -200,7 +201,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Apps & Internet",
+                               ThemeNames.apps_internet,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -231,7 +232,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Book circles",
+                               ThemeNames.book_circles,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -256,7 +257,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Film",
+                               ThemeNames.film,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -287,7 +288,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Culture & Education",
+                                ThemeNames.culture_edu,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -312,7 +313,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Nature & Society",
+                                ThemeNames.nature_society,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -343,7 +344,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Poetry & Prose",
+                                ThemeNames.poetry_prose,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -368,7 +369,7 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                                "Laguage",
+                                ThemeNames.language,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
