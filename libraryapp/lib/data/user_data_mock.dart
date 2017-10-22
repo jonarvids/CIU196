@@ -19,7 +19,8 @@ class MockUserRepository implements UserRepository{
         eventThemes: const <EventTheme>[
           const EventTheme(name: ThemeNames.culture_edu),
           const EventTheme(name: ThemeNames.art_music),
-          const EventTheme(name: ThemeNames.nature_society)]
+          const EventTheme(name: ThemeNames.nature_society)],
+        id: "user_3"
     ),
     const User(name:"Ibrahim Syed",
         occupation:"Author/Writer",
@@ -36,7 +37,8 @@ class MockUserRepository implements UserRepository{
           const EventTheme(name: ThemeNames.poetry_prose),
           const EventTheme(name: ThemeNames.language),
           const EventTheme(name: ThemeNames.apps_internet),
-          const EventTheme(name: ThemeNames.book_circles)]
+          const EventTheme(name: ThemeNames.book_circles)],
+          id: "user_2"
     ),
     const User(name:"Will Gardiner",
         occupation:"Student",
@@ -49,7 +51,8 @@ class MockUserRepository implements UserRepository{
           const EventTheme(name: ThemeNames.film),
           const EventTheme(name: ThemeNames.apps_internet),
           const EventTheme(name: ThemeNames.art_music),
-        ]
+        ],
+        id: "user_1"
     )
   ];
 

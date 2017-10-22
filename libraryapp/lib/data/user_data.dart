@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'dart:io';
 
 class User {
@@ -9,6 +8,7 @@ class User {
   final String description;
   final File imageFile;
   final List<EventTheme> eventThemes;
+  final String id; //Used mainly to associate with events.
 
   const User({
     this.name,
@@ -16,7 +16,8 @@ class User {
     this.occupation,
     this.year,
     this.description,
-    this.eventThemes});
+    this.eventThemes,
+    this.id});
 }
 
 abstract class UserRepository {
