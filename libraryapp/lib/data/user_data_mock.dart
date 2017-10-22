@@ -5,6 +5,7 @@ import 'theme_names.dart';
 
 class MockUserRepository implements UserRepository{
   // Mock data
+  // TODO: (No user image yet!!)
   static const kUsers = const <User>[
     const User(name:"Alice Johnsson",
         occupation:"History Teacher",
