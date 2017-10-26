@@ -2,9 +2,17 @@ import "package:flutter/material.dart";
 import 'dart:io';
 import 'data/theme_names.dart';
 import './screens/edit_profile.dart' as edit_profile;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'data/user_data.dart';
 
-class Profile extends StatelessWidget {
-  ProfileData person = new ProfileData();
+class Profile extends StatefulWidget{
+
+  @override
+  ProfileState createState() => new ProfileState();
+}
+
+class ProfileState extends State<Profile> {
+  User person = new User(name: "",description: "", year:  "",occupation: "");
   File imageFile;
   bool artToggle = true,
       bookToggle = false,
@@ -14,6 +22,40 @@ class Profile extends StatelessWidget {
       filmToggle = false,
       natureToggle = false,
       languageToggle = false;
+
+    _loadUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    person.name = prefs.getString(UserKey.name);
+    person.description = prefs.getString(UserKey.description);
+    person. occupation = prefs.getString(UserKey.occupation);
+    person.year = prefs.getString(UserKey.year);
+    person.imageFile = new File(prefs.getString(UserKey.imageFile));
+    person.id = prefs.getString(UserKey.id);
+    List<String> eventThemes = prefs.getStringList(UserKey.eventThemes);
+    List<EventTheme> interests;
+
+    //TODO: event themes always null, please find why and fix.
+    if (eventThemes != null) {
+      for (String theme in eventThemes) {
+        interests.add(new EventTheme(theme));
+      }
+      person.eventThemes = interests;
+      artToggle = person.eventThemes.contains(ThemeNames.art_music);
+      bookToggle = person.eventThemes.contains(ThemeNames.book_circles);
+      cultureToggle = person.eventThemes.contains(ThemeNames.culture_edu);
+      poetryToggle = person.eventThemes.contains(ThemeNames.poetry_prose);
+      appsToggle = person.eventThemes.contains(ThemeNames.apps_internet);
+      filmToggle = person.eventThemes.contains(ThemeNames.film);
+      natureToggle = person.eventThemes.contains(ThemeNames.nature_society);
+      languageToggle = person.eventThemes.contains(ThemeNames.language);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -398,12 +440,4 @@ class Profile extends StatelessWidget {
       ],
     );
   }
-}
-
-class ProfileData {
-  String name = "John Johnsson";
-  String occupation = "Blacksmith";
-  String year = "1901";
-  String description =
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 }
