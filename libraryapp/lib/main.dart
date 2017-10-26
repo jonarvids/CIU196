@@ -7,6 +7,8 @@ import 'data/user_data.dart' as user;
 import 'data/theme_names.dart' as themes;
 import 'presenter/profile_presenter.dart' as profile;
 import 'data/user_data_mock.dart';
+import 'data/event_data_mock.dart';
+import 'data/matched_event_mock.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -24,6 +26,8 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   TabController controller;
   Choice choice;
   MockUserRepository user_repo = new MockUserRepository();
+  MockEventRepository event_repo = new MockEventRepository();
+  MockMatchedEventRepository match_repo = new MockMatchedEventRepository();
 
   _saveUser() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -97,7 +101,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         physics: new NeverScrollableScrollPhysics(),
         children: <Widget>[
           new first.Profile(user_repo),
-          new second.Matches(/*user_repo*/), //TODO: Uncomment + implement
+          new second.Matches(user_repo, event_repo), //TODO: Uncomment + implement
           new third.Events(/*user_repo*/), //TODO: Uncomment + implement
         ],
       ),

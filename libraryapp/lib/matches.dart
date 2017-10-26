@@ -1,17 +1,28 @@
 import "package:flutter/material.dart";
 import 'package:collection/collection.dart' show lowerBound;
+import 'package:libraryapp/data/event_data.dart';
+import 'package:libraryapp/data/user_data.dart';
 import "dart:io";
 import "dart:math";
+import 'data/user_data_mock.dart';
+import 'data/event_data_mock.dart';
 
 enum MatchesAction { reset, leftSwipe, rightSwipe, horizontal }
 
 class Matches extends StatefulWidget {
+  UserRepository user_repo;
+  EventRepository event_repo;
+
+  Matches(this.user_repo, this.event_repo);
+
   @override
-  MatchesState createState() => new MatchesState();
+  MatchesState createState() => new MatchesState(user_repo, event_repo);
 }
 
 class EventItem implements Comparable<EventItem> {
   static var rand = new Random();
+
+
   EventItem({this.index, this.title, this.description, this.imageFile});
 
   EventItem.from(EventItem item)
@@ -39,8 +50,17 @@ class EventItem implements Comparable<EventItem> {
 }
 
 class MatchesState extends State<Matches> {
+  UserRepository user_repo;
+  EventRepository event_repo;
   List<EventItem> eventItems;
   DismissDirection dismissDirection = DismissDirection.horizontal;
+  MatchesState(this.user_repo, this.event_repo);
+
+  @override
+  initState() {
+    super.initState();
+    initEventItems();
+  }
 
   void initEventItems() {
     eventItems = new List<EventItem>.generate(16, (int index) {
@@ -51,12 +71,6 @@ class MatchesState extends State<Matches> {
               "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
           imageFile: null);
     });
-  }
-
-  @override
-  initState() {
-    super.initState();
-    initEventItems();
   }
 
   void handleAction(MatchesAction action) {
