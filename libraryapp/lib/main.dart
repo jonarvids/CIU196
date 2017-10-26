@@ -5,7 +5,6 @@ import './events.dart' as third;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data/user_data.dart' as user;
 import 'data/theme_names.dart' as themes;
-import 'presenter/profile_presenter.dart' as profile;
 import 'data/user_data_mock.dart';
 import 'data/event_data_mock.dart';
 import 'data/matched_event_mock.dart';
@@ -70,6 +69,9 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   void select() {
     setState(() {
       choice = choices[controller.index];
+      if (choice.title == "Match") {
+      //TODO: Make Matches listen to this and update events.
+      }
     });
   }
 
@@ -101,8 +103,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         physics: new NeverScrollableScrollPhysics(),
         children: <Widget>[
           new first.Profile(user_repo),
-          new second.Matches(user_repo, event_repo), //TODO: Uncomment + implement
-          new third.Events(/*user_repo*/), //TODO: Uncomment + implement
+          new second.Matches(user_repo.getUsers()["user_default"], event_repo),
         ],
       ),
     );

@@ -1,5 +1,3 @@
-
-import 'dart:async';
 import 'dart:collection';
 import 'user_data.dart';
 import 'theme_names.dart';
@@ -9,18 +7,21 @@ class MockUserRepository implements UserRepository{
   Map _kUsers = new HashMap<String, User>();
 
   MockUserRepository() {
+    var eventThemesa= new HashSet<String>();
+    eventThemesa.add(ThemeNames.language);
+    eventThemesa.add(ThemeNames.poetry_prose);
     User _a = new User(
         name: "Alice Johnsson",
         occupation:"History Teacher",
         year:"1979",
         description:
         "A cheerful teacher who loves to read and work with children.",
-        eventThemes: <String>[
-          ThemeNames.culture_edu,
-          ThemeNames.art_music,
-          ThemeNames.nature_society
-        ],
+        eventThemes: eventThemesa,
         id: "user_3");
+
+    var eventThemesb= new HashSet<String>();
+    eventThemesb.add(ThemeNames.language);
+    eventThemesb.add(ThemeNames.culture_edu);
     User _b = new User(
         name: "Ibrahim Syed",
         occupation:"Author/Writer",
@@ -29,13 +30,13 @@ class MockUserRepository implements UserRepository{
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
             " sed do eiusmod tempor incididunt ut labore et dolore"
             " magna aliqua.",
-        eventThemes: <String>[
-          ThemeNames.poetry_prose,
-          ThemeNames.language,
-          ThemeNames.apps_internet
-        ],
+        eventThemes: eventThemesb,
         id: "user_2"
     );
+
+    var eventThemesc= new HashSet<String>();
+    eventThemesc.add(ThemeNames.language);
+    eventThemesc.add(ThemeNames.culture_edu);
     User _c = new User(
         name: "Will Gardiner",
         occupation:"Student",
@@ -44,11 +45,7 @@ class MockUserRepository implements UserRepository{
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
             " sed do eiusmod tempor incididunt ut labore et dolore"
             " magna aliqua.",
-        eventThemes: <String>[
-          ThemeNames.poetry_prose,
-          ThemeNames.language,
-          ThemeNames.apps_internet
-        ],
+        eventThemes:eventThemesc,
         id: "user_default");
     _kUsers.putIfAbsent(_a.id, ()=> _a);
     _kUsers.putIfAbsent(_b.id, ()=> _b);

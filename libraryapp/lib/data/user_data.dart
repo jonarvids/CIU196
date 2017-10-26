@@ -18,7 +18,7 @@ class User {
   String year;
   String description;
   File imageFile;
-  List<String> eventThemes;
+  Set<String> eventThemes;
   String id; //Used mainly to associate with events.
 
   User({

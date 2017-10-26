@@ -1,14 +1,14 @@
 
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dart:collection';
-import 'user_data.dart';
 import 'event_data.dart';
 import 'theme_names.dart';
 
 class MockEventRepository implements EventRepository{
-    Map<String,EventItem> _kEvents = new HashMap<String,EventItem>();
     MockEventRepository() {
+      var eventThemesa= new HashSet<String>();
+      eventThemesa.add(ThemeNames.language);
+      eventThemesa.add(ThemeNames.poetry_prose);
       EventItem a = new EventItem(
           id: "event_1",
           title: "Book-writing workshop",
@@ -20,10 +20,11 @@ class MockEventRepository implements EventRepository{
               "commodo consequat. ",
           fromDate: "2017-11-20 20:00:00",
           fromTime: const TimeOfDay(hour: 20,minute: 0),
-          eventThemes: <String>[
-            ThemeNames.poetry_prose,
-            ThemeNames.language],
+          eventThemes: eventThemesa
       );
+      var eventThemesb= new HashSet<String>();
+      eventThemesb.add(ThemeNames.language);
+      eventThemesb.add(ThemeNames.culture_edu);
       EventItem b =  new EventItem(
         id: "event_2",
         title: "Language Café",
@@ -35,29 +36,44 @@ class MockEventRepository implements EventRepository{
         "commodo consequat. ",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes: <String>[
-        ThemeNames.language,
-        ThemeNames.culture_edu]
+        eventThemes: eventThemesb
       );
+      var eventThemesc= new HashSet<String>();
+      eventThemesc.add(ThemeNames.language);
+      eventThemesc.add(ThemeNames.culture_edu);
       EventItem c = new EventItem(
         id: "event_3",
-        title: "Language Café",
+        title: "Code night featuring Ericsson",
         description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
         " sed do eiusmod tempor incididunt ut labore et dolore"
         " magna aliqua. Ut enim ad minim veniam, quis nostrud "
         "exercitation ullamco laboris nisi ut aliquip ex ea "
-        "commodo consequat. ",
+        "commodo consequat.",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes: <String>[
-        ThemeNames.language,
-        ThemeNames.culture_edu]
+        eventThemes: eventThemesc
+      );
+      var eventThemesd= new HashSet<String>();
+      eventThemesd.add(ThemeNames.art_music);
+      eventThemesd.add(ThemeNames.apps_internet);
+      EventItem d = new EventItem(
+          id: "event_3",
+          title: "Roleplaying: The Burning Wheel",
+          description:
+          "Burning Wheel is a tabletop roleplaying game , "
+              "one which plays out more like improv-theatre; you can't win,"
+              " and neither can you lose.",
+          fromDate: "2017-11-2 20:00:00",
+          fromTime: const TimeOfDay(hour: 20,minute: 0),
+          eventThemes: eventThemesd
       );
       addEvent(a);
       addEvent(b);
       addEvent(c);
+      addEvent(d);
     }
+    Map<String,EventItem> _kEvents = new HashMap<String,EventItem>();
 
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import "package:flutter/material.dart";
 import 'dart:io';
 import 'data/theme_names.dart';
@@ -37,13 +39,15 @@ class ProfileState extends State<Profile> {
       person.imageFile = new File(prefs.getString(UserKey.imageFile));
       person.id = prefs.getString(UserKey.id);
       List<String> eventThemes = prefs.getStringList(UserKey.eventThemes);
-      person.eventThemes = eventThemes;
+      Set<String> themeSet = new HashSet<String>();
+      themeSet.addAll(eventThemes);
+      person.eventThemes = themeSet;
       artToggle = person.eventThemes.contains(ThemeNames.art_music);
       bookToggle = person.eventThemes.contains(ThemeNames.book_circles);
       cultureToggle = person.eventThemes.contains(ThemeNames.culture_edu);
       poetryToggle = person.eventThemes.contains(ThemeNames.poetry_prose);
       appsToggle = person.eventThemes.contains(ThemeNames.apps_internet);
-      filmToggle = person.eventThemes.contains(ThemeNames.film);
+      filmToggle = person.eventThemes.contains(ThemeNames.film_games);
       natureToggle = person.eventThemes.contains(ThemeNames.nature_society);
       languageToggle = person.eventThemes.contains(ThemeNames.language);
      }
@@ -53,7 +57,6 @@ class ProfileState extends State<Profile> {
     super.initState();
     //get the DEFAULT USER
     person = user_repo.getUsers()["user_default"];
-    print(person.eventThemes[0]);
     updateInterests();
   }
 
@@ -63,13 +66,14 @@ class ProfileState extends State<Profile> {
     cultureToggle = person.eventThemes.contains(ThemeNames.culture_edu);
     poetryToggle = person.eventThemes.contains(ThemeNames.poetry_prose);
     appsToggle = person.eventThemes.contains(ThemeNames.apps_internet);
-    filmToggle = person.eventThemes.contains(ThemeNames.film);
+    filmToggle = person.eventThemes.contains(ThemeNames.film_games);
     natureToggle = person.eventThemes.contains(ThemeNames.nature_society);
     languageToggle = person.eventThemes.contains(ThemeNames.language);
   }
 
   @override
   Widget build(BuildContext context) {
+    updateInterests();
     return new Scaffold(
       appBar: buildAppBar(context),
       body: buildBody(context),
@@ -94,7 +98,6 @@ class ProfileState extends State<Profile> {
   }
 
   Widget buildBody(BuildContext context) {
-    updateInterests();
     Widget pictureSection = new Container(
       margin: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: new Column(
@@ -311,7 +314,7 @@ class ProfileState extends State<Profile> {
                                 ),
                               ),
                               new Text(
-                               ThemeNames.film,
+                               ThemeNames.film_games,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,

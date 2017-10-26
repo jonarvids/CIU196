@@ -53,7 +53,7 @@ class EditProfileState extends State<EditProfile> {
     cultureToggle = profile.eventThemes.contains(ThemeNames.culture_edu);
     poetryToggle = profile.eventThemes.contains(ThemeNames.poetry_prose);
     appsToggle = profile.eventThemes.contains(ThemeNames.apps_internet);
-    filmToggle = profile.eventThemes.contains(ThemeNames.film);
+    filmToggle = profile.eventThemes.contains(ThemeNames.film_games);
     natureToggle = profile.eventThemes.contains(ThemeNames.nature_society);
     languageToggle = profile.eventThemes.contains(ThemeNames.language);
   }
@@ -332,7 +332,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Art & Music",
+                                ThemeNames.art_music,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -357,7 +357,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Apps & Internet",
+                                ThemeNames.apps_internet,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -388,7 +388,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Book circles",
+                                ThemeNames.book_circles,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -409,11 +409,11 @@ class EditProfileState extends State<EditProfile> {
                                     : Theme.of(context).disabledColor,
                                 onPressed: () {
                                   setState(() => filmToggle = !filmToggle);
-                                  updateInterest(filmToggle, ThemeNames.film);
+                                  updateInterest(filmToggle, ThemeNames.film_games);
                                 },
                               ),
                               new Text(
-                                "Film",
+                                ThemeNames.film_games,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -445,7 +445,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Culture & Education",
+                                ThemeNames.culture_edu,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -470,7 +470,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Nature & Society",
+                                ThemeNames.nature_society,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -501,7 +501,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Poetry & Prose",
+                                ThemeNames.poetry_prose,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -527,7 +527,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Laguage",
+                                ThemeNames.language,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,

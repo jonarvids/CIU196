@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:libraryapp/data/user_data.dart';
 import 'package:quiver/core.dart';
 
 class EventItem {
@@ -10,7 +8,7 @@ class EventItem {
   String fromDate; //Parse into DateTime
   TimeOfDay fromTime; //Parse into TimeOfDay
   File imageFile;
-  List<String> eventThemes;
+  Set<String> eventThemes;
   String id;
 
   EventItem({
