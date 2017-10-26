@@ -3,6 +3,7 @@ description: A new Flutter project.
 
 dependencies:
   image_picker: "^0.1.1"
+  shared_preferences: "0.2.4+1"
   flutter:
     sdk: flutter
 
