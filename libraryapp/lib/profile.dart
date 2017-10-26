@@ -6,14 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'data/user_data.dart';
 
 class Profile extends StatefulWidget{
+  UserRepository user_repo;
+  Profile(this.user_repo);
 
   @override
-  ProfileState createState() => new ProfileState();
+  ProfileState createState() => new ProfileState(user_repo);
 }
 
 class ProfileState extends State<Profile> {
+  UserRepository user_repo;
   User person = new User(name: "",description: "", year:  "",occupation: "");
-  File imageFile;
   bool artToggle = true,
       bookToggle = false,
       cultureToggle = true,
@@ -23,23 +25,19 @@ class ProfileState extends State<Profile> {
       natureToggle = false,
       languageToggle = false;
 
-    _loadUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    person.name = prefs.getString(UserKey.name);
-    person.description = prefs.getString(UserKey.description);
-    person. occupation = prefs.getString(UserKey.occupation);
-    person.year = prefs.getString(UserKey.year);
-    person.imageFile = new File(prefs.getString(UserKey.imageFile));
-    person.id = prefs.getString(UserKey.id);
-    List<String> eventThemes = prefs.getStringList(UserKey.eventThemes);
-    List<EventTheme> interests;
+  ProfileState(this.user_repo);
 
-    //TODO: event themes always null, please find why and fix.
-    if (eventThemes != null) {
-      for (String theme in eventThemes) {
-        interests.add(new EventTheme(theme));
-      }
-      person.eventThemes = interests;
+  //We don't use this right now since we want it to be demoable.
+    _loadUser() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      person.name = prefs.getString(UserKey.name);
+      person.description = prefs.getString(UserKey.description);
+      person. occupation = prefs.getString(UserKey.occupation);
+      person.year = prefs.getString(UserKey.year);
+      person.imageFile = new File(prefs.getString(UserKey.imageFile));
+      person.id = prefs.getString(UserKey.id);
+      List<String> eventThemes = prefs.getStringList(UserKey.eventThemes);
+      person.eventThemes = eventThemes;
       artToggle = person.eventThemes.contains(ThemeNames.art_music);
       bookToggle = person.eventThemes.contains(ThemeNames.book_circles);
       cultureToggle = person.eventThemes.contains(ThemeNames.culture_edu);
@@ -48,13 +46,26 @@ class ProfileState extends State<Profile> {
       filmToggle = person.eventThemes.contains(ThemeNames.film);
       natureToggle = person.eventThemes.contains(ThemeNames.nature_society);
       languageToggle = person.eventThemes.contains(ThemeNames.language);
-    }
-  }
+     }
 
   @override
   void initState() {
     super.initState();
-    _loadUser();
+    //get the DEFAULT USER
+    person = user_repo.getUsers()["user_default"];
+    print(person.eventThemes[0]);
+    updateInterests();
+  }
+
+  updateInterests() {
+    artToggle = person.eventThemes.contains(ThemeNames.art_music);
+    bookToggle = person.eventThemes.contains(ThemeNames.book_circles);
+    cultureToggle = person.eventThemes.contains(ThemeNames.culture_edu);
+    poetryToggle = person.eventThemes.contains(ThemeNames.poetry_prose);
+    appsToggle = person.eventThemes.contains(ThemeNames.apps_internet);
+    filmToggle = person.eventThemes.contains(ThemeNames.film);
+    natureToggle = person.eventThemes.contains(ThemeNames.nature_society);
+    languageToggle = person.eventThemes.contains(ThemeNames.language);
   }
 
   @override
@@ -75,7 +86,7 @@ class ProfileState extends State<Profile> {
             onPressed: () {
               Navigator.of(context).push(new MaterialPageRoute<Null>(
                     builder: (BuildContext context) =>
-                        new edit_profile.EditProfile(),
+                        new edit_profile.EditProfile(person),
                   ));
             },
           ),
@@ -83,6 +94,7 @@ class ProfileState extends State<Profile> {
   }
 
   Widget buildBody(BuildContext context) {
+    updateInterests();
     Widget pictureSection = new Container(
       margin: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: new Column(
@@ -92,7 +104,7 @@ class ProfileState extends State<Profile> {
               child: new Column(
                 children: [
                   new ClipOval(
-                    child: imageFile == null
+                    child: person.imageFile == null
                         ? new Container(
                             alignment: Alignment.center,
                             color: Theme.of(context).disabledColor,
@@ -114,7 +126,7 @@ class ProfileState extends State<Profile> {
                               image: new DecorationImage(
                                 fit: BoxFit.cover,
                                 image: new FileImage(
-                                  imageFile,
+                                  person.imageFile,
                                   scale: 0.25,
                                 ),
                               ),

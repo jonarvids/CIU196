@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:quiver/core.dart';
 
 class UserKey {
   static final String name = "name";
@@ -17,7 +18,7 @@ class User {
   String year;
   String description;
   File imageFile;
-  List<EventTheme> eventThemes;
+  List<String> eventThemes;
   String id; //Used mainly to associate with events.
 
   User({
@@ -29,11 +30,18 @@ class User {
     this.eventThemes,
     this.id});
 
+  @override
+  bool operator == (o) => o is User && o.id == id;
+  @override
+  int get hashCode => hash2(name.hashCode, year.hashCode);
+
 }
 
 
+
 abstract class UserRepository {
-  Future<List<User>> fetch();
+  Map<String, User> getUsers();
+  void addUser(User user);
 }
 
 class FetchUserDataException implements Exception {
@@ -47,10 +55,3 @@ class FetchUserDataException implements Exception {
 }
 
 //MARK: Theme data (Only use predefined theme names).
-class EventTheme {
-  final String name;
-
-  EventTheme(
-    this.name);
-
-}

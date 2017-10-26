@@ -23,6 +23,7 @@ class Tabs extends StatefulWidget {
 class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   TabController controller;
   Choice choice;
+  MockUserRepository user_repo = new MockUserRepository();
 
   _saveUser() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -47,7 +48,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _saveUser();
+    //_saveUser(); //We tried an easier solution since we don't care to save it to file.
     controller = new TabController(
       vsync: this,
       length: 3,
@@ -95,9 +96,9 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         controller: controller,
         physics: new NeverScrollableScrollPhysics(),
         children: <Widget>[
-          new first.Profile(),
-          new second.Matches(),
-          new third.Events(),
+          new first.Profile(user_repo),
+          new second.Matches(/*user_repo*/), //TODO: Uncomment + implement
+          new third.Events(/*user_repo*/), //TODO: Uncomment + implement
         ],
       ),
     );

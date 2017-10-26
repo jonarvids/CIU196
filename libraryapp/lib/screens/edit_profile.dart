@@ -3,29 +3,27 @@ import 'dart:async';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
+import '../data/user_data.dart';
+import '../data/theme_names.dart';
 
 class EditProfile extends StatefulWidget {
-  @override
-  EditProfileState createState() => new EditProfileState();
-}
+  User user;
 
-class ProfileData {
-  String name = "John Johnsson";
-  String occupation = "Blacksmith";
-  String year = "1901";
-  String description =
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+  EditProfile(User user) {
+    this.user = user;
+  }
+
+  @override
+  EditProfileState createState() => new EditProfileState(user);
 }
 
 class EditProfileState extends State<EditProfile> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  ProfileData profile = new ProfileData();
-  File imageFile;
+  User profile = new User(name: "",description: "", year:  "",occupation: "");
   bool formWasEdited = false, autoValidate = false;
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final TextEditingController nameController = new TextEditingController();
-  final TextEditingController occupationController =
-      new TextEditingController();
+  final TextEditingController occupationController = new TextEditingController();
   final TextEditingController ageController = new TextEditingController();
 
   bool artToggle = true,
@@ -37,6 +35,38 @@ class EditProfileState extends State<EditProfile> {
       natureToggle = false,
       languageToggle = false;
 
+  EditProfileState(this.profile);
+
+  @override
+  void initState() {
+    updateInterests();
+    nameController.text = profile.name;
+    occupationController.text = profile.occupation;
+    ageController.text = profile.year;
+    return super.initState();
+  }
+
+  //TODO: Duplicate, shouldn't be here.
+  updateInterests() {
+    artToggle = profile.eventThemes.contains(ThemeNames.art_music);
+    bookToggle = profile.eventThemes.contains(ThemeNames.book_circles);
+    cultureToggle = profile.eventThemes.contains(ThemeNames.culture_edu);
+    poetryToggle = profile.eventThemes.contains(ThemeNames.poetry_prose);
+    appsToggle = profile.eventThemes.contains(ThemeNames.apps_internet);
+    filmToggle = profile.eventThemes.contains(ThemeNames.film);
+    natureToggle = profile.eventThemes.contains(ThemeNames.nature_society);
+    languageToggle = profile.eventThemes.contains(ThemeNames.language);
+  }
+  void updateInterest(bool save, String interest){
+    if (!save) {
+      profile.eventThemes.remove(interest);
+    } else {
+      if (!profile.eventThemes.contains(interest)) {
+        profile.eventThemes.add(interest);
+      }
+    }
+  }
+
   void showInSnackBar(BuildContext context, String value) {
     scaffoldKey.currentState
         .showSnackBar(new SnackBar(content: new Text(value)));
@@ -45,7 +75,7 @@ class EditProfileState extends State<EditProfile> {
   getImage() async {
     var fileName = await ImagePicker.pickImage();
     setState(() {
-      imageFile = fileName;
+      profile.imageFile = fileName;
     });
   }
 
@@ -132,14 +162,6 @@ class EditProfileState extends State<EditProfile> {
   }
 
   @override
-  void initState() {
-    nameController.text = profile.name;
-    occupationController.text = profile.occupation;
-    ageController.text = profile.year;
-    return super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: scaffoldKey,
@@ -166,7 +188,7 @@ class EditProfileState extends State<EditProfile> {
               child: new Column(
                 children: [
                   new ClipOval(
-                    child: imageFile == null
+                    child: profile.imageFile == null
                         ? new Container(
                             alignment: Alignment.center,
                             color: Theme.of(context).disabledColor,
@@ -195,7 +217,7 @@ class EditProfileState extends State<EditProfile> {
                               image: new DecorationImage(
                                 fit: BoxFit.cover,
                                 image: new FileImage(
-                                  imageFile,
+                                  profile.imageFile,
                                   scale: 0.25,
                                 ),
                               ),
@@ -306,6 +328,7 @@ class EditProfileState extends State<EditProfile> {
                                     : Theme.of(context).disabledColor,
                                 onPressed: () {
                                   setState(() => artToggle = !artToggle);
+                                  updateInterest(artToggle, ThemeNames.art_music);
                                 },
                               ),
                               new Text(
@@ -330,6 +353,7 @@ class EditProfileState extends State<EditProfile> {
                                     : Theme.of(context).disabledColor,
                                 onPressed: () {
                                   setState(() => appsToggle = !appsToggle);
+                                  updateInterest(appsToggle, ThemeNames.apps_internet);
                                 },
                               ),
                               new Text(
@@ -360,6 +384,7 @@ class EditProfileState extends State<EditProfile> {
                                     : Theme.of(context).disabledColor,
                                 onPressed: () {
                                   setState(() => bookToggle = !bookToggle);
+                                  updateInterest(bookToggle, ThemeNames.book_circles);
                                 },
                               ),
                               new Text(
@@ -384,6 +409,7 @@ class EditProfileState extends State<EditProfile> {
                                     : Theme.of(context).disabledColor,
                                 onPressed: () {
                                   setState(() => filmToggle = !filmToggle);
+                                  updateInterest(filmToggle, ThemeNames.film);
                                 },
                               ),
                               new Text(
@@ -415,6 +441,7 @@ class EditProfileState extends State<EditProfile> {
                                 onPressed: () {
                                   setState(
                                       () => cultureToggle = !cultureToggle);
+                                  updateInterest(cultureToggle, ThemeNames.culture_edu);
                                 },
                               ),
                               new Text(
@@ -439,6 +466,7 @@ class EditProfileState extends State<EditProfile> {
                                     : Theme.of(context).disabledColor,
                                 onPressed: () {
                                   setState(() => natureToggle = !natureToggle);
+                                  updateInterest(natureToggle, ThemeNames.nature_society);
                                 },
                               ),
                               new Text(
@@ -469,6 +497,7 @@ class EditProfileState extends State<EditProfile> {
                                     : Theme.of(context).disabledColor,
                                 onPressed: () {
                                   setState(() => poetryToggle = !poetryToggle);
+                                  updateInterest(poetryToggle, ThemeNames.poetry_prose);
                                 },
                               ),
                               new Text(
@@ -494,6 +523,7 @@ class EditProfileState extends State<EditProfile> {
                                 onPressed: () {
                                   setState(
                                       () => languageToggle = !languageToggle);
+                                  updateInterest(languageToggle, ThemeNames.language);
                                 },
                               ),
                               new Text(

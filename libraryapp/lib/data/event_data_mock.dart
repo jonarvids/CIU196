@@ -19,9 +19,9 @@ class MockEventRepository implements EventRepository{
             "commodo consequat. ",
         fromDate: "2017-11-20 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes: <EventTheme>[
-          new EventTheme(ThemeNames.poetry_prose),
-          new EventTheme(ThemeNames.language)]
+        eventThemes: <String>[
+          ThemeNames.poetry_prose,
+          ThemeNames.language]
     ),
     new EventItem(
         title: "Language Café",
@@ -33,9 +33,9 @@ class MockEventRepository implements EventRepository{
             "commodo consequat. ",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes: <EventTheme>[
-          new EventTheme(ThemeNames.language),
-          new EventTheme(ThemeNames.culture_edu)]
+        eventThemes: <String>[
+          ThemeNames.language,
+          ThemeNames.culture_edu]
     ),
     new EventItem(
         title: "Language Café",
@@ -47,9 +47,9 @@ class MockEventRepository implements EventRepository{
             "commodo consequat. ",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes: <EventTheme>[
-          new EventTheme(ThemeNames.language),
-          new EventTheme(ThemeNames.culture_edu)]
+        eventThemes: <String>[
+          ThemeNames.language,
+          ThemeNames.culture_edu]
     )
   ];
 

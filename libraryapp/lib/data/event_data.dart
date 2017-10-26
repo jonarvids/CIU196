@@ -9,7 +9,7 @@ class EventItem {
   String fromDate; //Parse into DateTime
   TimeOfDay fromTime; //Parse into TimeOfDay
   File imageFile;
-  List<EventTheme> eventThemes;
+  List<String> eventThemes;
 
   EventItem({
     this.description,
