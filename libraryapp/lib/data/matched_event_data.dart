@@ -6,7 +6,7 @@ class MatchedEventItem {
   final EventItem match;
   final List<User> matchedUsers;
 
-  const MatchedEventItem({
+  MatchedEventItem({
     this.match,
     this.matchedUsers
   });

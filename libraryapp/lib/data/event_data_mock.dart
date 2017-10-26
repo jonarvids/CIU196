@@ -8,8 +8,8 @@ import 'theme_names.dart';
 class MockEventRepository implements EventRepository{
   // Mock data
   // TODO: (No user image yet!!)
-  static const kEvents = const <EventItem>[
-    const EventItem(
+  static var kEvents = <EventItem>[
+    new EventItem(
         title: "Book-writing workshop",
         description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
@@ -19,11 +19,11 @@ class MockEventRepository implements EventRepository{
             "commodo consequat. ",
         fromDate: "2017-11-20 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes:const <EventTheme>[
-          const EventTheme(name: ThemeNames.poetry_prose),
-          const EventTheme(name: ThemeNames.language)]
+        eventThemes: <EventTheme>[
+          new EventTheme(ThemeNames.poetry_prose),
+          new EventTheme(ThemeNames.language)]
     ),
-    const EventItem(
+    new EventItem(
         title: "Language Café",
         description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
@@ -33,11 +33,11 @@ class MockEventRepository implements EventRepository{
             "commodo consequat. ",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes:const <EventTheme>[
-          const EventTheme(name: ThemeNames.language),
-          const EventTheme(name: ThemeNames.culture_edu)]
+        eventThemes: <EventTheme>[
+          new EventTheme(ThemeNames.language),
+          new EventTheme(ThemeNames.culture_edu)]
     ),
-    const EventItem(
+    new EventItem(
         title: "Language Café",
         description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
@@ -47,9 +47,9 @@ class MockEventRepository implements EventRepository{
             "commodo consequat. ",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes:const <EventTheme>[
-          const EventTheme(name: ThemeNames.language),
-          const EventTheme(name: ThemeNames.culture_edu)]
+        eventThemes: <EventTheme>[
+          new EventTheme(ThemeNames.language),
+          new EventTheme(ThemeNames.culture_edu)]
     )
   ];
 
