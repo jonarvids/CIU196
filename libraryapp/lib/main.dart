@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import './profile.dart' as first;
 import './matches.dart' as second;
 import './events.dart' as third;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'data/user_data.dart' as user;
+import 'data/theme_names.dart' as themes;
+import 'presenter/profile_presenter.dart' as profile;
+import 'data/user_data_mock.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -19,9 +24,30 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   TabController controller;
   Choice choice;
 
+  _saveUser() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String name = prefs.getString(user.UserKey.name);
+    if (name == null || name == "") {
+      prefs.setString(user.UserKey.name, "Jonas");
+      prefs.setString(user.UserKey.year, "1994");
+      prefs.setString(user.UserKey.description, "A cute horse with fluffy brown hair."
+          " He loves to read and especially writing good code.");
+      prefs.setString(user.UserKey.occupation, "Interaction design student");
+      prefs.setString(user.UserKey.imageFile, "");
+      prefs.setString(user.UserKey.id, "user_jonas");
+      prefs.setStringList(user.UserKey.eventThemes, <String>[themes.ThemeNames.apps_internet,
+          themes.ThemeNames.culture_edu,
+          themes.ThemeNames.poetry_prose]);
+    } else  {
+      print("Default user not saved; already saved.");
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _saveUser();
     controller = new TabController(
       vsync: this,
       length: 3,
