@@ -13,7 +13,7 @@ class Events extends StatefulWidget {
   MatchedEventRepository matched_event_repo;
   UserRepository user_repo;
   Events(this.event_repo, this.matched_event_repo, this.user_repo);
-  
+
   @override
   TabsState createState() => new TabsState(event_repo,matched_event_repo,user_repo);
 }
