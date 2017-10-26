@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:libraryapp/data/user_data.dart';
 
 class EventItem {
-  final String title;
-  final String description;
-  final String fromDate; //Parse into DateTime
-  final TimeOfDay fromTime; //Parse into TimeOfDay
-  final File imageFile;
-  final List<EventTheme> eventThemes;
+  String title;
+  String description;
+  String fromDate; //Parse into DateTime
+  TimeOfDay fromTime; //Parse into TimeOfDay
+  File imageFile;
+  List<EventTheme> eventThemes;
 
-  const EventItem({
+  EventItem({
     this.description,
     this.title,
     this.fromDate,
@@ -24,6 +24,7 @@ class EventItem {
 abstract class EventRepository {
   Future<List<EventItem>> fetch();
 }
+
 class FetchEventDataException implements Exception {
   String _message;
 
