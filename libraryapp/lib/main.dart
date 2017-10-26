@@ -104,6 +104,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         children: <Widget>[
           new first.Profile(user_repo),
           new second.Matches(user_repo.getUsers()["user_default"], event_repo),
+          new third.Events(event_repo,match_repo,user_repo), //TODO: Uncomment + implement
         ],
       ),
     );
