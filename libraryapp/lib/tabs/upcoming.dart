@@ -6,6 +6,7 @@ class Upcoming extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
+      //onPressed: () { print("xD"); },
         child: new ListView(
       padding: new EdgeInsets.all(8.0),
       children: <Widget>[
@@ -167,7 +168,7 @@ class Upcoming extends StatelessWidget {
                         new Column(
                           children: [
                             new Icon(
-                              Icons.add,
+                              Icons.person_pin,
                               size: 30.0,
                               color: Colors.white,
                             ),
