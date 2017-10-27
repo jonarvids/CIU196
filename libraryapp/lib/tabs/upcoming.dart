@@ -5,7 +5,11 @@ import 'dart:io';
 class Upcoming extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Container(
+     return new GestureDetector(
+        onTap: (){
+        print("Container clicked");
+        },
+    child: new Container(
       //onPressed: () { print("xD"); },
         child: new ListView(
       padding: new EdgeInsets.all(8.0),
@@ -189,7 +193,8 @@ class Upcoming extends StatelessWidget {
           //end of row
         ]),
       ],
-    ));
+    ))
+    );
   }
 }
 
