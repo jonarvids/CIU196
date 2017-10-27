@@ -6,7 +6,10 @@ import './events.dart' as third;
 void main() {
   runApp(new MaterialApp(
     home: new Tabs(),
-    theme: new ThemeData.light(),
+    theme: new ThemeData(
+           primaryColor: const Color(0xFF00acc1),
+           accentColor: const Color(0xFFFFEB3B),
+        ),
   ));
 }
 
@@ -48,6 +51,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
       bottomNavigationBar: new Material(
         color: Theme.of(context).primaryColor,
         child: new TabBar(
+         // indicatorColor: Color(0xFF448AFF),
           controller: controller,
           tabs: <Tab>[
             new Tab(
