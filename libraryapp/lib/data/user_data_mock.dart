@@ -1,64 +1,63 @@
-
 import 'dart:async';
 import 'user_data.dart';
 import 'theme_names.dart';
 
-class MockUserRepository implements UserRepository{
+class MockUserRepository implements UserRepository {
   // Mock data
   // TODO: (No user image yet!!)
-  static const kUsers = const <User>[
-    const User(name:"Alice Johnsson",
-        occupation:"History Teacher",
-        year:"1979",
-        description:
+  static var kUsers = <User>[
+    new User(
+        "Alice Johnsson",
+        "History Teacher",
+        "1979",
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
-            " sed do eiusmod tempor incididunt ut labore et dolore"
-            " magna aliqua. Ut enim ad minim veniam, quis nostrud "
-            "exercitation ullamco laboris nisi ut aliquip ex ea "
-            "commodo consequat. ",
-        eventThemes: const <EventTheme>[
-          const EventTheme(name: ThemeNames.culture_edu),
-          const EventTheme(name: ThemeNames.art_music),
-          const EventTheme(name: ThemeNames.nature_society)],
-        id: "user_3"
-    ),
-    const User(name:"Ibrahim Syed",
-        occupation:"Author/Writer",
-        year:"1985",
-        description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
-            " sed do eiusmod tempor incididunt ut labore et dolore"
-            " magna aliqua. Ut enim ad minim veniam, quis nostrud "
-            "exercitation ullamco laboris nisi ut aliquip ex ea "
-            "commodo consequat. Duis aute irure dolor in"
-            " reprehenderit in voluptate velit esse cillum dolore"
-            " eu fugiat nulla pariatur.",
-        eventThemes: const <EventTheme>[
-          const EventTheme(name: ThemeNames.poetry_prose),
-          const EventTheme(name: ThemeNames.language),
-          const EventTheme(name: ThemeNames.apps_internet),
-          const EventTheme(name: ThemeNames.book_circles)],
-          id: "user_2"
-    ),
-    const User(name:"Will Gardiner",
-        occupation:"Student",
-        year:"1996",
-        description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
-            " sed do eiusmod tempor incididunt ut labore et dolore"
-            " magna aliqua.",
-        eventThemes: const <EventTheme>[
-          const EventTheme(name: ThemeNames.film),
-          const EventTheme(name: ThemeNames.apps_internet),
-          const EventTheme(name: ThemeNames.art_music),
+        " sed do eiusmod tempor incididunt ut labore et dolore"
+        " magna aliqua. Ut enim ad minim veniam, quis nostrud "
+        "exercitation ullamco laboris nisi ut aliquip ex ea "
+        "commodo consequat. ",
+        "images/jonte.jpg",
+        <String>[
+          ThemeNames.culture_edu,
+          ThemeNames.art_music,
+          ThemeNames.nature_society
         ],
-        id: "user_1"
-    )
+        "user_3"),
+    new User(
+        "Ibrahim Syed",
+        "Author/Writer",
+        "1985",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
+        " sed do eiusmod tempor incididunt ut labore et dolore"
+        " magna aliqua. Ut enim ad minim veniam, quis nostrud "
+        "exercitation ullamco laboris nisi ut aliquip ex ea "
+        "commodo consequat. Duis aute irure dolor in"
+        " reprehenderit in voluptate velit esse cillum dolore"
+        " eu fugiat nulla pariatur.",
+        "images/glMtb0Z.png",
+        <String>[
+          ThemeNames.poetry_prose,
+          ThemeNames.language,
+          ThemeNames.apps_internet,
+          ThemeNames.book_circles
+        ],
+        "user_2"),
+    new User(
+        "Will Gardiner",
+        "Student",
+        "1996",
+        "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
+        " sed do eiusmod tempor incididunt ut labore et dolore"
+        " magna aliqua.",
+        "images/Waving bear.jpg",
+        <String>[
+          ThemeNames.film,
+          ThemeNames.apps_internet,
+          ThemeNames.art_music,
+        ],
+        "user_1")
   ];
 
-  Future<List<User>> fetch(){
+  Future<List<User>> fetch() {
     return new Future.value(kUsers);
   }
-
 }
-

@@ -3,23 +3,18 @@ import 'dart:async';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
+import '../data/user_data_mock.dart' as mockUser;
+import '../data/user_data.dart' as user;
+import '../data/theme_names.dart' as theme;
 
 class EditProfile extends StatefulWidget {
   @override
   EditProfileState createState() => new EditProfileState();
 }
 
-class ProfileData {
-  String name = "John Johnsson";
-  String occupation = "Blacksmith";
-  String year = "1901";
-  String description =
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-}
-
 class EditProfileState extends State<EditProfile> {
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
-  ProfileData profile = new ProfileData();
+  user.User person = mockUser.MockUserRepository.kUsers[0];
   File imageFile;
   bool formWasEdited = false, autoValidate = false;
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
@@ -28,14 +23,49 @@ class EditProfileState extends State<EditProfile> {
       new TextEditingController();
   final TextEditingController ageController = new TextEditingController();
 
-  bool artToggle = true,
+  bool artToggle = false,
       bookToggle = false,
-      cultureToggle = true,
-      poetryToggle = true,
+      cultureToggle = false,
+      poetryToggle = false,
       appsToggle = false,
       filmToggle = false,
       natureToggle = false,
       languageToggle = false;
+
+  void checkUserThemes() {
+    for (int i = 0; i < person.eventThemes.length; i++) {
+      var currentTheme = person.eventThemes[i];
+
+      switch (currentTheme) {
+        case theme.ThemeNames.apps_internet:
+          appsToggle = true;
+          break;
+        case theme.ThemeNames.art_music:
+          artToggle = true;
+          break;
+        case theme.ThemeNames.book_circles:
+          bookToggle = true;
+          break;
+        case theme.ThemeNames.culture_edu:
+          cultureToggle = true;
+          break;
+        case theme.ThemeNames.film:
+          filmToggle = true;
+          break;
+        case theme.ThemeNames.language:
+          languageToggle = true;
+          break;
+        case theme.ThemeNames.nature_society:
+          natureToggle = true;
+          break;
+        case theme.ThemeNames.poetry_prose:
+          poetryToggle = true;
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
   void showInSnackBar(BuildContext context, String value) {
     scaffoldKey.currentState
@@ -67,6 +97,33 @@ class EditProfileState extends State<EditProfile> {
     } else {
       showInSnackBar(context, "Profile updated");
       form.save();
+      var userThemes = <String>[];
+      if (artToggle) {
+        userThemes.add(theme.ThemeNames.art_music);
+      }
+      if (bookToggle) {
+        userThemes.add(theme.ThemeNames.book_circles);
+      }
+      if (cultureToggle) {
+        userThemes.add(theme.ThemeNames.culture_edu);
+      }
+      if (poetryToggle) {
+        userThemes.add(theme.ThemeNames.poetry_prose);
+      }
+      if (appsToggle) {
+        userThemes.add(theme.ThemeNames.apps_internet);
+      }
+      if (filmToggle) {
+        userThemes.add(theme.ThemeNames.film);
+      }
+      if (natureToggle) {
+        userThemes.add(theme.ThemeNames.nature_society);
+      }
+      if (languageToggle) {
+        userThemes.add(theme.ThemeNames.language);
+      }
+      print(userThemes);
+      person.eventThemes = userThemes;
       // TODO: Save/upload data
     }
   }
@@ -133,9 +190,10 @@ class EditProfileState extends State<EditProfile> {
 
   @override
   void initState() {
-    nameController.text = profile.name;
-    occupationController.text = profile.occupation;
-    ageController.text = profile.year;
+    nameController.text = person.name;
+    occupationController.text = person.occupation;
+    ageController.text = person.year;
+    checkUserThemes();
     return super.initState();
   }
 
@@ -166,7 +224,7 @@ class EditProfileState extends State<EditProfile> {
               child: new Column(
                 children: [
                   new ClipOval(
-                    child: imageFile == null
+                    child: person.imagePath == ""
                         ? new Container(
                             alignment: Alignment.center,
                             color: Theme.of(context).disabledColor,
@@ -194,9 +252,8 @@ class EditProfileState extends State<EditProfile> {
                             decoration: new BoxDecoration(
                               image: new DecorationImage(
                                 fit: BoxFit.cover,
-                                image: new FileImage(
-                                  imageFile,
-                                  scale: 0.25,
+                                image: new AssetImage(
+                                  person.imagePath,
                                 ),
                               ),
                             ),
@@ -230,7 +287,10 @@ class EditProfileState extends State<EditProfile> {
             margin: const EdgeInsets.only(top: 16.0),
             child: new Text(
               "Information",
-              style: new TextStyle(color: Theme.of(context).primaryColor),
+              style: new TextStyle(
+                fontSize: 16.0,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
           new TextFormField(
@@ -240,9 +300,9 @@ class EditProfileState extends State<EditProfile> {
                 hintText: "Enter your name",
                 labelText: "Name *"),
             onSaved: (String value) {
-              profile.name = value;
+              person.name = value;
             },
-            initialValue: profile.name == "" ? null : profile.name,
+            initialValue: person.name == "" ? null : person.name,
             validator: validateName,
           ),
           new TextFormField(
@@ -252,9 +312,9 @@ class EditProfileState extends State<EditProfile> {
                 hintText: "Enter your occupation",
                 labelText: "Occupation *"),
             onSaved: (String value) {
-              profile.occupation = value;
+              person.occupation = value;
             },
-            initialValue: profile.occupation == "" ? null : profile.occupation,
+            initialValue: person.occupation == "" ? null : person.occupation,
             validator: validateOccupation,
           ),
           new TextFormField(
@@ -265,10 +325,22 @@ class EditProfileState extends State<EditProfile> {
                 labelText: "Year of birth *"),
             keyboardType: TextInputType.phone,
             onSaved: (String value) {
-              profile.year = value;
+              person.year = value;
             },
-            initialValue: profile.year == "" ? null : profile.year,
+            initialValue: person.year == "" ? null : person.year,
             validator: validateYear,
+          ),
+          new TextFormField(
+            autocorrect: false,
+            maxLines: 5,
+            decoration: new InputDecoration(
+                icon: new Icon(Icons.short_text),
+                hintText: "Write something about yourself",
+                labelText: "Description "),
+            onSaved: (String value) {
+              person.description = value;
+            },
+            initialValue: person.year == "" ? "" : person.description,
           ),
         ],
       ),
@@ -285,7 +357,10 @@ class EditProfileState extends State<EditProfile> {
                 margin: const EdgeInsets.only(top: 16.0),
                 child: new Text(
                   "Interests **",
-                  style: new TextStyle(color: Theme.of(context).primaryColor),
+                  style: new TextStyle(
+                    fontSize: 16.0,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
               new Row(
@@ -309,7 +384,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Art & Music",
+                                theme.ThemeNames.art_music,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -333,7 +408,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Apps & Internet",
+                                theme.ThemeNames.apps_internet,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -363,7 +438,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Book circles",
+                                theme.ThemeNames.book_circles,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -387,7 +462,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Film",
+                                theme.ThemeNames.film,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -418,7 +493,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Culture & Education",
+                                theme.ThemeNames.culture_edu,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -442,7 +517,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Nature & Society",
+                                theme.ThemeNames.nature_society,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -472,7 +547,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Poetry & Prose",
+                                theme.ThemeNames.poetry_prose,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,
@@ -497,7 +572,7 @@ class EditProfileState extends State<EditProfile> {
                                 },
                               ),
                               new Text(
-                                "Laguage",
+                                theme.ThemeNames.language,
                                 style: new TextStyle(
                                   color: Colors.grey,
                                   fontSize: 11.0,

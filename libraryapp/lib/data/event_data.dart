@@ -1,24 +1,24 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:libraryapp/data/user_data.dart';
 
-class EventItem {
-  final String title;
-  final String description;
-  final String fromDate; //Parse into DateTime
-  final TimeOfDay fromTime; //Parse into TimeOfDay
-  final File imageFile;
-  final List<EventTheme> eventThemes;
+class EventItem implements Comparable<EventItem>{
+  String title;
+  String description;
+  String fromDate; //Parse into DateTime
+  String fromTime; //Parse into TimeOfDay
+  String imagePath;
+  List<String> eventThemes;
 
-  const EventItem({
-    this.description,
-    this.title,
-    this.fromDate,
-    this.fromTime,
-    this.imageFile,
-    this.eventThemes
-  });
+  EventItem(String title, String description, String fromDate, String formTime, String imagePath, List<String> eventThemes) {
+    this.title = title;
+    this.description = description;
+    this.fromDate = fromDate;
+    this.fromTime = fromTime;
+    this.imagePath = imagePath;
+    this.eventThemes = eventThemes;
+  }
+
+    @override
+  int compareTo(EventItem other) => index.compareTo(other.index);
 }
 
 abstract class EventRepository {

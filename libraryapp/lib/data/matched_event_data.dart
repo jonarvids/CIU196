@@ -3,13 +3,13 @@ import 'package:libraryapp/data/event_data.dart';
 import 'package:libraryapp/data/user_data.dart';
 
 class MatchedEventItem {
-  final EventItem match;
-  final List<User> matchedUsers;
+  EventItem match;
+  List<User> matchedUsers;
 
-  const MatchedEventItem({
-    this.match,
-    this.matchedUsers
-  });
+  MatchedEventItem(EventItem match, List<User> matchedUsers) {
+    this.match = match;
+    this.matchedUsers = matchedUsers;
+  }
 }
 
 abstract class MatchedEventRepository {

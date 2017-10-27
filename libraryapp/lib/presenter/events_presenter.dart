@@ -31,10 +31,11 @@ class MatchPresenter {
   }
 
   //This is how the view will as for the user's matches.
-  void loadMatches(){
+  void loadMatches() {
     assert(_view != null);
 
-    _repository.fetch()
+    _repository
+        .fetch()
         .then((events) => _view.onLoadMatchedEventsComplete(events))
         .catchError((onError) {
       print(onError);

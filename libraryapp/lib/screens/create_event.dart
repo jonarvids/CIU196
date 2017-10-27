@@ -11,14 +11,15 @@ class CreateEvent extends StatefulWidget {
   @override
   createState() => new CreateEventState();
 }
+
 class EventTheme {
   bool isToggled;
 
   EventTheme(bool isToggled) {
     this.isToggled = isToggled;
   }
-
 }
+
 class EventData {
   String description = '';
   String title = '';
@@ -42,7 +43,6 @@ class CreateEventState extends State<CreateEvent> {
   bool _autovalidate = false;
   bool _formWasEdited = false;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-
 
   void showInSnackBar(String value) {
     _scaffoldKey.currentState
@@ -111,116 +111,111 @@ class CreateEventState extends State<CreateEvent> {
   Widget eventImageSection(BuildContext context) {
     return new Container(
         child: new Column(
-          children: <Widget>[
-            new ClipRect(
-              child: event.imageFile == null
-                  ? new Container(
-                alignment: Alignment.center,
-                color: Theme.of(context).disabledColor,
-                height: 150.0,
-                child: new IconButton(
-                  padding: const EdgeInsets.only(left: 100.0, right: 100.0, bottom: 40.0,top: 40.0),
-                  icon: new Icon(
-                    Icons.add_a_photo,
-                    color: Colors.white,
+      children: <Widget>[
+        new ClipRect(
+          child: event.imageFile == null
+              ? new Container(
+                  alignment: Alignment.center,
+                  color: Theme.of(context).disabledColor,
+                  height: 150.0,
+                  child: new IconButton(
+                    padding: const EdgeInsets.only(
+                        left: 100.0, right: 100.0, bottom: 40.0, top: 40.0),
+                    icon: new Icon(
+                      Icons.add_a_photo,
+                      color: Colors.white,
+                    ),
+                    onPressed: getImage,
                   ),
-                  onPressed: getImage,
-                ),
-              )
-                  : new Container(
-                alignment: Alignment.center,
-                child: new IconButton(
-                  padding: const EdgeInsets.only(left: 200.0, right: 200.0, bottom: 40.0,top: 40.0),
-                  icon: new Icon(
-                    Icons.add_a_photo,
-                    color: Colors.white,
+                )
+              : new Container(
+                  alignment: Alignment.center,
+                  child: new IconButton(
+                    padding: const EdgeInsets.only(
+                        left: 200.0, right: 200.0, bottom: 40.0, top: 40.0),
+                    icon: new Icon(
+                      Icons.add_a_photo,
+                      color: Colors.white,
+                    ),
+                    onPressed: getImage,
                   ),
-                  onPressed: getImage,
-                ),
-                decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                    fit: BoxFit.cover,
-                    image: new FileImage(
-                      event.imageFile,
-                      scale: 0.25,
+                  decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                      fit: BoxFit.cover,
+                      image: new FileImage(
+                        event.imageFile,
+                        scale: 0.25,
+                      ),
                     ),
                   ),
                 ),
-              ),
+        ),
+        new Container(
+          margin: const EdgeInsets.only(top: 8.0),
+          child: new Text(
+            "Tap to update the event banner",
+            style: new TextStyle(
+              color: Theme.of(context).disabledColor,
             ),
-            new Container(
-              margin: const EdgeInsets.only(top: 8.0),
-              child: new Text(
-                "Tap to update the event banner",
-                style: new TextStyle(
-                  color: Theme.of(context).disabledColor,
-                ),
-              ),
-            )
-          ],
+          ),
         )
-    );
+      ],
+    ));
   }
 
   Widget formSection(BuildContext context) {
-    return wrapWithPadding( new Form(
+    return wrapWithPadding(new Form(
         key: _formKey,
         autovalidate: _autovalidate,
         onWillPop: _warnUserAboutInvalidData,
-        child: new Column(
-            children: <Widget>[
-              new TextFormField(
-                decoration: const InputDecoration(
-                  hintText: 'What do you want to call this event?',
-                  labelText: 'Title *',
-                ),
-                onSaved: (String value) {
-                  event.title = value;
-                },
-                validator: _validateTitle,
+        child: new Column(children: <Widget>[
+          new TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'What do you want to call this event?',
+              labelText: 'Title *',
+            ),
+            onSaved: (String value) {
+              event.title = value;
+            },
+            validator: _validateTitle,
+          ),
+          new TextFormField(
+              decoration: const InputDecoration(
+                hintText: 'What is this event about?',
+                labelText: 'Description *',
               ),
-              new TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'What is this event about?',
-                    labelText: 'Description *',
-                  ),
-                  maxLines: 5,
-                  onSaved: (String value) {
-                    event.description = value;
-                  }
-                //TODO: No validator yet.
+              maxLines: 5,
+              onSaved: (String value) {
+                event.description = value;
+              }
+              //TODO: No validator yet.
               ),
-            ]
-        )
-    )
-    );
+        ])));
   }
 
   Widget dateSection(BuildContext context) {
-    return wrapWithPadding(new Column(
-          children: <Widget>[
-            new _DateTimePicker(
-              labelText: 'Date & Time *',
-              selectedDate: event._fromDate,
-              selectedTime: event._fromTime,
-              selectDate: (DateTime date) {
-                setState(() {
-                  event._fromDate = date;
-                });
-              },
-              selectTime: (TimeOfDay time) {
-                setState(() {
-                  event._fromTime = time;
-                });
-              },
-            )
-          ]
+    return wrapWithPadding(new Column(children: <Widget>[
+      new _DateTimePicker(
+        labelText: 'Date & Time *',
+        selectedDate: event._fromDate,
+        selectedTime: event._fromTime,
+        selectDate: (DateTime date) {
+          setState(() {
+            event._fromDate = date;
+          });
+        },
+        selectTime: (TimeOfDay time) {
+          setState(() {
+            event._fromTime = time;
+          });
+        },
       )
-    );
+    ]));
   }
 
   Widget themeSection(BuildContext context) {
-    return wrapWithPadding( new Column(
+    return wrapWithPadding(
+      new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           new Column(
@@ -338,7 +333,8 @@ class CreateEventState extends State<CreateEvent> {
                               new IconButton(
                                 icon: new Icon(Icons.school),
                                 iconSize: 30.0,
-                                color: setEventTheme(event.cultureTheme, context),
+                                color:
+                                    setEventTheme(event.cultureTheme, context),
                                 onPressed: toggleTheme(event.cultureTheme),
                               ),
                               new Text(
@@ -358,7 +354,8 @@ class CreateEventState extends State<CreateEvent> {
                               new IconButton(
                                 icon: new Icon(Icons.nature_people),
                                 iconSize: 30.0,
-                                color: setEventTheme(event.natureTheme, context),
+                                color:
+                                    setEventTheme(event.natureTheme, context),
                                 onPressed: toggleTheme(event.natureTheme),
                               ),
                               new Text(
@@ -384,7 +381,8 @@ class CreateEventState extends State<CreateEvent> {
                               new IconButton(
                                 icon: new Icon(Icons.edit),
                                 iconSize: 30.0,
-                                color: setEventTheme(event.poetryTheme, context),
+                                color:
+                                    setEventTheme(event.poetryTheme, context),
                                 onPressed: toggleTheme(event.poetryTheme),
                               ),
                               new Text(
@@ -404,7 +402,8 @@ class CreateEventState extends State<CreateEvent> {
                               new IconButton(
                                 icon: new Icon(Icons.language),
                                 iconSize: 30.0,
-                                color: setEventTheme(event.languageTheme, context),
+                                color:
+                                    setEventTheme(event.languageTheme, context),
                                 onPressed: toggleTheme(event.languageTheme),
                               ),
                               new Text(
@@ -430,7 +429,8 @@ class CreateEventState extends State<CreateEvent> {
   }
 
   Widget footerSection(BuildContext context) {
-   return wrapWithPadding( new Column(
+    return wrapWithPadding(
+      new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           new Container(
@@ -459,9 +459,9 @@ class CreateEventState extends State<CreateEvent> {
         : Theme.of(context).disabledColor;
   }
 
-  VoidCallback toggleTheme(EventTheme theme){
-    return () { setState(
-      () => theme.isToggled = !theme.isToggled);
+  VoidCallback toggleTheme(EventTheme theme) {
+    return () {
+      setState(() => theme.isToggled = !theme.isToggled);
     };
   }
 
@@ -470,14 +470,14 @@ class CreateEventState extends State<CreateEvent> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-            title: new Text('Create event'),
-            centerTitle: true,
-            actions: <Widget>[
-              new IconButton(
-                icon: new Icon(Icons.check),
-                onPressed: _handleSubmitted,
-              )
-            ],
+          title: new Text('Create event'),
+          centerTitle: true,
+          actions: <Widget>[
+            new IconButton(
+              icon: new Icon(Icons.check),
+              onPressed: _handleSubmitted,
+            )
+          ],
         ),
         body: _buildContent(context));
   }
@@ -501,22 +501,20 @@ EdgeInsets appInset() {
 }
 
 Container wrapWithPadding(Widget widget) {
-  return new Container(
-      padding: appInset(),
-      child: widget
-  );
+  return new Container(padding: appInset(), child: widget);
 }
 //Mark: Date Picker Demo Code
 //[https://github.com/flutter/flutter/blob/master/examples/flutter_gallery/lib/demo/material/date_and_time_picker_demo.dart]
 
 class _InputDropdown extends StatelessWidget {
-  const _InputDropdown({
-    Key key,
-    this.child,
-    this.labelText,
-    this.valueText,
-    this.valueStyle,
-    this.onPressed }) : super(key: key);
+  const _InputDropdown(
+      {Key key,
+      this.child,
+      this.labelText,
+      this.valueText,
+      this.valueStyle,
+      this.onPressed})
+      : super(key: key);
 
   final String labelText;
   final String valueText;
@@ -539,8 +537,9 @@ class _InputDropdown extends StatelessWidget {
           children: <Widget>[
             new Text(valueText, style: valueStyle),
             new Icon(Icons.arrow_drop_down,
-                color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade700 : Colors.white70
-            ),
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.grey.shade700
+                    : Colors.white70),
           ],
         ),
       ),
@@ -549,14 +548,14 @@ class _InputDropdown extends StatelessWidget {
 }
 
 class _DateTimePicker extends StatelessWidget {
-  const _DateTimePicker({
-    Key key,
-    this.labelText,
-    this.selectedDate,
-    this.selectedTime,
-    this.selectDate,
-    this.selectTime
-  }) : super(key: key);
+  const _DateTimePicker(
+      {Key key,
+      this.labelText,
+      this.selectedDate,
+      this.selectedTime,
+      this.selectDate,
+      this.selectTime})
+      : super(key: key);
 
   final String labelText;
   final DateTime selectedDate;
@@ -569,19 +568,14 @@ class _DateTimePicker extends StatelessWidget {
         context: context,
         initialDate: selectedDate,
         firstDate: new DateTime(2015, 8),
-        lastDate: new DateTime(2101)
-    );
-    if (picked != null && picked != selectedDate)
-      selectDate(picked);
+        lastDate: new DateTime(2101));
+    if (picked != null && picked != selectedDate) selectDate(picked);
   }
 
   Future<Null> _selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-        context: context,
-        initialTime: selectedTime
-    );
-    if (picked != null && picked != selectedTime)
-      selectTime(picked);
+    final TimeOfDay picked =
+        await showTimePicker(context: context, initialTime: selectedTime);
+    if (picked != null && picked != selectedTime) selectTime(picked);
   }
 
   @override
@@ -596,7 +590,9 @@ class _DateTimePicker extends StatelessWidget {
             labelText: labelText,
             valueText: new DateFormat.yMMMd().format(selectedDate),
             valueStyle: valueStyle,
-            onPressed: () { _selectDate(context); },
+            onPressed: () {
+              _selectDate(context);
+            },
           ),
         ),
         const SizedBox(width: 12.0),
@@ -605,7 +601,9 @@ class _DateTimePicker extends StatelessWidget {
           child: new _InputDropdown(
             valueText: selectedTime.format(context),
             valueStyle: valueStyle,
-            onPressed: () { _selectTime(context); },
+            onPressed: () {
+              _selectTime(context);
+            },
           ),
         ),
       ],

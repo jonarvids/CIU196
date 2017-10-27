@@ -1,19 +1,21 @@
 import "package:flutter/material.dart";
-import 'dart:io';
-import 'data/theme_names.dart';
 import './screens/edit_profile.dart' as edit_profile;
+import './data/user_data_mock.dart' as mockUser;
+import './data/user_data.dart' as user;
+import './data/theme_names.dart' as theme;
 
-class Profile extends StatelessWidget {
-  ProfileData person = new ProfileData();
-  File imageFile;
-  bool artToggle = true,
-      bookToggle = false,
-      cultureToggle = true,
-      poetryToggle = true,
-      appsToggle = false,
-      filmToggle = false,
-      natureToggle = false,
-      languageToggle = false;
+class Profile extends StatefulWidget {
+  @override
+  ProfileState createState() => new ProfileState();
+}
+
+class ProfileState extends State<Profile> {
+  user.User person = mockUser.MockUserRepository.kUsers[0];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class Profile extends StatelessWidget {
               child: new Column(
                 children: [
                   new ClipOval(
-                    child: imageFile == null
+                    child: person.imagePath == ""
                         ? new Container(
                             alignment: Alignment.center,
                             color: Theme.of(context).disabledColor,
@@ -71,9 +73,8 @@ class Profile extends StatelessWidget {
                             decoration: new BoxDecoration(
                               image: new DecorationImage(
                                 fit: BoxFit.cover,
-                                image: new FileImage(
-                                  imageFile,
-                                  scale: 0.25,
+                                image: new AssetImage(
+                                  person.imagePath,
                                 ),
                               ),
                             ),
@@ -86,7 +87,7 @@ class Profile extends StatelessWidget {
                       style: new TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontSize: 16.0,
                       ),
                     ),
                   ),
@@ -94,6 +95,7 @@ class Profile extends StatelessWidget {
                     child: new Text(
                       person.occupation,
                       style: new TextStyle(
+                          fontSize: 12.0,
                           color: Theme.of(context).primaryColor,
                           fontStyle: FontStyle.italic),
                     ),
@@ -102,6 +104,7 @@ class Profile extends StatelessWidget {
                     child: new Text(
                       "Born " + person.year,
                       style: new TextStyle(
+                          fontSize: 12.0,
                           color: Theme.of(context).primaryColor,
                           fontStyle: FontStyle.italic),
                     ),
@@ -126,6 +129,7 @@ class Profile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: new TextStyle(
                 color: Theme.of(context).primaryColor,
+                fontSize: 16.0,
               ),
             ),
           ),
@@ -133,12 +137,36 @@ class Profile extends StatelessWidget {
             person.description,
             textAlign: TextAlign.start,
             style: new TextStyle(
-              fontSize: 11.0,
+              fontSize: 12.0,
             ),
           ),
         ],
       ),
     );
+
+    Widget buildInterest(IconData icon, String theme) {
+      return new Column(
+        children: <Widget>[
+          new Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: new Icon(
+              icon,
+              size: 30.0,
+              color: person.eventThemes.contains(theme)
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).disabledColor,
+            ),
+          ),
+          new Text(
+            theme,
+            style: new TextStyle(
+              color: Colors.grey,
+              fontSize: 11.0,
+            ),
+          ),
+        ],
+      );
+    }
 
     Widget interestsSection = new Container(
       child: new Column(
@@ -151,7 +179,10 @@ class Profile extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 16.0),
                 child: new Text(
                   "Interests",
-                  style: new TextStyle(color: Theme.of(context).primaryColor),
+                  style: new TextStyle(
+                    fontSize: 16.0,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
               new Row(
@@ -162,52 +193,16 @@ class Profile extends StatelessWidget {
                       children: [
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.palette,
-                                  size: 30.0,
-                                  color: artToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                                ThemeNames.art_music,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.palette,
+                            theme.ThemeNames.art_music,
                           ),
                         ),
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.computer,
-                                  size: 30.0,
-                                  color: appsToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                               ThemeNames.apps_internet,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.computer,
+                            theme.ThemeNames.apps_internet,
                           ),
                         ),
                       ],
@@ -218,52 +213,16 @@ class Profile extends StatelessWidget {
                       children: [
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.local_library,
-                                  size: 30.0,
-                                  color: bookToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                               ThemeNames.book_circles,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.local_library,
+                            theme.ThemeNames.book_circles,
                           ),
                         ),
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.movie,
-                                  size: 30.0,
-                                  color: filmToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                               ThemeNames.film,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.movie,
+                            theme.ThemeNames.film,
                           ),
                         ),
                       ],
@@ -274,52 +233,16 @@ class Profile extends StatelessWidget {
                       children: [
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.school,
-                                  size: 30.0,
-                                  color: cultureToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                                ThemeNames.culture_edu,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.school,
+                            theme.ThemeNames.culture_edu,
                           ),
                         ),
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.nature_people,
-                                  size: 30.0,
-                                  color: natureToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                                ThemeNames.nature_society,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.nature_people,
+                            theme.ThemeNames.nature_society,
                           ),
                         ),
                       ],
@@ -330,52 +253,16 @@ class Profile extends StatelessWidget {
                       children: [
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.edit,
-                                  size: 30.0,
-                                  color: poetryToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                                ThemeNames.poetry_prose,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.edit,
+                            theme.ThemeNames.poetry_prose,
                           ),
                         ),
                         new Container(
                           margin: const EdgeInsets.all(8.0),
-                          child: new Column(
-                            children: <Widget>[
-                              new Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 8.0, bottom: 8.0),
-                                child: new Icon(
-                                  Icons.language,
-                                  size: 30.0,
-                                  color: languageToggle
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).disabledColor,
-                                ),
-                              ),
-                              new Text(
-                                ThemeNames.language,
-                                style: new TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
+                          child: buildInterest(
+                            Icons.language,
+                            theme.ThemeNames.language,
                           ),
                         ),
                       ],
@@ -398,12 +285,4 @@ class Profile extends StatelessWidget {
       ],
     );
   }
-}
-
-class ProfileData {
-  String name = "John Johnsson";
-  String occupation = "Blacksmith";
-  String year = "1901";
-  String description =
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 }

@@ -48,6 +48,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
       bottomNavigationBar: new Material(
         color: Theme.of(context).primaryColor,
         child: new TabBar(
+          indicatorColor: Colors.black,
           controller: controller,
           tabs: <Tab>[
             new Tab(
