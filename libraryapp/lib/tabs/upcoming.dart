@@ -16,23 +16,20 @@ class Upcoming extends StatelessWidget {
             margin: new EdgeInsets.only(bottom: 10.0),
             height: 100.0,
             decoration: new BoxDecoration(
-              color: Colors.green[400],
+              color: Theme.of(context).primaryColor,
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: const Color(0xcc000000),
                   offset: new Offset(0.0, 2.0),
-                  blurRadius: 6.0,
+                  blurRadius: 2.0,
                 ),
               ],
-              borderRadius: new BorderRadius.horizontal(left: 
-                const Radius.circular(50.0),
-              ),
             ),
             child: new Row(
               children: [
                 // Fox
                 new Image.asset(
-                  'images/fox.jpg',
+                  'images/gamenight.jpg',
                   height: 100.0,
                   width: 100.0,
                   fit: BoxFit.cover,
@@ -119,8 +116,9 @@ class Upcoming extends StatelessWidget {
                           children: [
                             new ClipOval(
                               child: new Image.asset(
-                                'images/fox.jpg',
+                                'images/guy1.jpg',
                                 height: 30.0,
+                                width: 30.0,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -135,8 +133,9 @@ class Upcoming extends StatelessWidget {
                           children: [
                             new ClipOval(
                               child: new Image.asset(
-                                'images/fox.jpg',
+                                'images/guy2.jpg',
                                 height: 30.0,
+                                width: 30.0,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -151,12 +150,13 @@ class Upcoming extends StatelessWidget {
                           children: [
                             new ClipOval(
                               child: new Image.asset(
-                                'images/fox.jpg',
+                                'images/girl1.jpg',
                                 height: 30.0,
+                                width: 30.0,
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            new Text("Sandra",
+                            new Text("Sara",
                                 //overflow: TextOverflow.ellipsis,
                                 style: new TextStyle(
                                   color: Colors.white,
@@ -185,17 +185,6 @@ class Upcoming extends StatelessWidget {
             ),
           ),
           //second row
-          new Container(
-            margin: new EdgeInsets.only(bottom: 10.0),
-            color: Colors.green[200],
-            child: new Row(children: [
-              new Image.asset(
-                'images/fox.jpg',
-                height: 100.0,
-                fit: BoxFit.contain,
-              ),
-            ]),
-          ),
           //end of row
         ]),
       ],

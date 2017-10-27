@@ -19,6 +19,10 @@ flutter:
   uses-material-design: true
   assets:
     - images/fox.jpg
+    - images/guy1.jpg
+    - images/guy2.jpg
+    - images/girl1.jpg
+    - images/gamenight.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/.
