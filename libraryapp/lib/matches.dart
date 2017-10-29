@@ -437,7 +437,7 @@ class MatchesState extends State<Matches> {
                                   Icons.block,
                                   color: Colors.white,
                                 ),
-                                color: Colors.red,
+                                color: const Color(0xFFFFA726),
                                 onPressed: () {
                                   setState(() {
                                     eventItems.remove(item);
@@ -483,7 +483,8 @@ class MatchesState extends State<Matches> {
                                   Icons.check,
                                   color: Colors.white,
                                 ),
-                                color: Colors.green,
+                                color:Theme.of(context).accentColor
+                                ,
                                 onPressed: () {
                                   setState(() {
                                     eventItems.remove(item);
