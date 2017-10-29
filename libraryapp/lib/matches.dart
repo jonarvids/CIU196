@@ -95,7 +95,6 @@ class MatchesState extends State<Matches> {
     return new AppBar(
         title: new Text("Matches"),
         centerTitle: true,
-        backgroundColor: Colors.green,
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.add),

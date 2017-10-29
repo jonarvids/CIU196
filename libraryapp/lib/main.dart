@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import './profile.dart' as first;
 import './matches.dart' as second;
 import './events.dart' as third;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'data/user_data.dart' as user;
 import 'data/theme_names.dart' as themes;
 import 'data/user_data_mock.dart';
@@ -12,7 +11,10 @@ import 'data/matched_event_mock.dart';
 void main() {
   runApp(new MaterialApp(
     home: new Tabs(),
-    theme: new ThemeData.light(),
+    theme: new ThemeData(
+           primaryColor: const Color(0xFF00acc1),
+           accentColor: const Color(0xFFFFEB3B),
+        ),
   ));
 }
 
@@ -27,26 +29,6 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   MockUserRepository user_repo = new MockUserRepository();
   MockEventRepository event_repo = new MockEventRepository();
   MockMatchedEventRepository match_repo = new MockMatchedEventRepository();
-
-  _saveUser() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String name = prefs.getString(user.UserKey.name);
-    if (name == null || name == "") {
-      prefs.setString(user.UserKey.name, "Jonas");
-      prefs.setString(user.UserKey.year, "1994");
-      prefs.setString(user.UserKey.description, "A cute horse with fluffy brown hair."
-          " He loves to read and especially writing good code.");
-      prefs.setString(user.UserKey.occupation, "Interaction design student");
-      prefs.setString(user.UserKey.imageFile, "");
-      prefs.setString(user.UserKey.id, "user_jonas");
-      prefs.setStringList(user.UserKey.eventThemes, <String>[themes.ThemeNames.apps_internet,
-          themes.ThemeNames.culture_edu,
-          themes.ThemeNames.poetry_prose]);
-    } else  {
-      print("Default user not saved; already saved.");
-      return;
-    }
-  }
 
   @override
   void initState() {
@@ -81,6 +63,7 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
       bottomNavigationBar: new Material(
         color: Theme.of(context).primaryColor,
         child: new TabBar(
+         // indicatorColor: Color(0xFF448AFF),
           controller: controller,
           tabs: <Tab>[
             new Tab(

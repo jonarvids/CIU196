@@ -3,9 +3,7 @@ import 'data/event_data.dart';
 import 'data/user_data.dart';
 import 'data/matched_event_data.dart';
 import './tabs/upcoming.dart' as first;
-import './tabs/interested.dart' as second;
-import './tabs/past.dart' as third;
-import './tabs/created.dart' as fourth;
+import './tabs/created.dart' as second;
 import './screens/create_event.dart' as create_event;
 
 class Events extends StatefulWidget {
@@ -60,9 +58,7 @@ class TabsState extends State<Events> with SingleTickerProviderStateMixin {
               })
         ],
         bottom: new TabBar(controller: controller, tabs: <Tab>[
-          new Tab(text: "Upcoming"),
-          new Tab(text: "Interested"),
-          new Tab(text: "Past"),
+          new Tab(text: "Matched"),
           new Tab(text: "Created")
         ]));
   }
@@ -70,9 +66,7 @@ class TabsState extends State<Events> with SingleTickerProviderStateMixin {
   Widget buildBody(BuildContext context) {
     return new TabBarView(controller: controller, children: <Widget>[
       new first.Upcoming(),
-      new second.Interested(event_repo,matched_event_repo,user_repo),
-      new third.Past(),
-      new fourth.Created()
+      new second.Created()
     ]);
   }
 }

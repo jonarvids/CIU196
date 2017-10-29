@@ -4,7 +4,6 @@ import "package:flutter/material.dart";
 import 'dart:io';
 import 'data/theme_names.dart';
 import './screens/edit_profile.dart' as edit_profile;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'data/user_data.dart';
 
 class Profile extends StatefulWidget{
@@ -28,29 +27,6 @@ class ProfileState extends State<Profile> {
       languageToggle = false;
 
   ProfileState(this.user_repo);
-
-  //We don't use this right now since we want it to be demoable.
-    _loadUser() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      person.name = prefs.getString(UserKey.name);
-      person.description = prefs.getString(UserKey.description);
-      person. occupation = prefs.getString(UserKey.occupation);
-      person.year = prefs.getString(UserKey.year);
-      person.imageFile = new File(prefs.getString(UserKey.imageFile));
-      person.id = prefs.getString(UserKey.id);
-      List<String> eventThemes = prefs.getStringList(UserKey.eventThemes);
-      Set<String> themeSet = new HashSet<String>();
-      themeSet.addAll(eventThemes);
-      person.eventThemes = themeSet;
-      artToggle = person.eventThemes.contains(ThemeNames.art_music);
-      bookToggle = person.eventThemes.contains(ThemeNames.book_circles);
-      cultureToggle = person.eventThemes.contains(ThemeNames.culture_edu);
-      poetryToggle = person.eventThemes.contains(ThemeNames.poetry_prose);
-      appsToggle = person.eventThemes.contains(ThemeNames.apps_internet);
-      filmToggle = person.eventThemes.contains(ThemeNames.film_games);
-      natureToggle = person.eventThemes.contains(ThemeNames.nature_society);
-      languageToggle = person.eventThemes.contains(ThemeNames.language);
-     }
 
   @override
   void initState() {
