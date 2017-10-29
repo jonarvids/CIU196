@@ -96,8 +96,8 @@ class EditProfileState extends State<EditProfile> {
       showInSnackBar(context, "At least one interest is required");
     } else {
       showInSnackBar(context, "Profile updated");
+
       form.save();
-      // TODO: Save/upload data
     }
   }
 
