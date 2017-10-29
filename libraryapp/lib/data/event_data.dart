@@ -7,6 +7,7 @@ class EventItem {
   String description;
   String fromDate; //Parse into DateTime
   TimeOfDay fromTime; //Parse into TimeOfDay
+  String imageFile;
   File userFile;
   Set<String> eventThemes;
   String id;

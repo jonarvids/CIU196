@@ -23,6 +23,7 @@ class MockEventRepository implements EventRepository{
           fromDate: "2017-11-20 20:00:00",
           fromTime: const TimeOfDay(hour: 20,minute: 0),
           eventThemes: eventThemesa,
+          imageFile: 'images/gamenight.jpg'
       );
       var eventThemesb= new HashSet<String>();
       eventThemesb.add(ThemeNames.language);
@@ -39,6 +40,7 @@ class MockEventRepository implements EventRepository{
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
         eventThemes: eventThemesb,
+          imageFile: 'images/gamenight.jpg'
 
       );
       var eventThemesc= new HashSet<String>();
@@ -56,6 +58,7 @@ class MockEventRepository implements EventRepository{
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
         eventThemes: eventThemesc,
+          imageFile: 'images/gamenight.jpg'
       );
       var eventThemesd= new HashSet<String>();
       eventThemesd.add(ThemeNames.art_music);
@@ -70,6 +73,7 @@ class MockEventRepository implements EventRepository{
           fromDate: "2017-11-2 20:00:00",
           fromTime: const TimeOfDay(hour: 20,minute: 0),
           eventThemes: eventThemesd,
+          imageFile: 'images/gamenight.jpg'
       );
       addEvent(a);
       addEvent(b);
