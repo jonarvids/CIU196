@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:collection';
 import 'event_data.dart';
@@ -20,7 +22,7 @@ class MockEventRepository implements EventRepository{
               "commodo consequat. ",
           fromDate: "2017-11-20 20:00:00",
           fromTime: const TimeOfDay(hour: 20,minute: 0),
-          eventThemes: eventThemesa
+          eventThemes: eventThemesa,
       );
       var eventThemesb= new HashSet<String>();
       eventThemesb.add(ThemeNames.language);
@@ -36,7 +38,8 @@ class MockEventRepository implements EventRepository{
         "commodo consequat. ",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes: eventThemesb
+        eventThemes: eventThemesb,
+
       );
       var eventThemesc= new HashSet<String>();
       eventThemesc.add(ThemeNames.language);
@@ -52,7 +55,7 @@ class MockEventRepository implements EventRepository{
         "commodo consequat.",
         fromDate: "2017-11-2 20:00:00",
         fromTime: const TimeOfDay(hour: 20,minute: 0),
-        eventThemes: eventThemesc
+        eventThemes: eventThemesc,
       );
       var eventThemesd= new HashSet<String>();
       eventThemesd.add(ThemeNames.art_music);
@@ -66,7 +69,7 @@ class MockEventRepository implements EventRepository{
               " and neither can you lose.",
           fromDate: "2017-11-2 20:00:00",
           fromTime: const TimeOfDay(hour: 20,minute: 0),
-          eventThemes: eventThemesd
+          eventThemes: eventThemesd,
       );
       addEvent(a);
       addEvent(b);

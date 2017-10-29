@@ -119,7 +119,7 @@ class ProfileState extends State<Profile> {
                       style: new TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontSize: 22.0,
                       ),
                     ),
                   ),
@@ -128,6 +128,7 @@ class ProfileState extends State<Profile> {
                       person.occupation,
                       style: new TextStyle(
                           color: Theme.of(context).primaryColor,
+                          fontSize: 16.0,
                           fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -135,6 +136,7 @@ class ProfileState extends State<Profile> {
                     child: new Text(
                       "Born " + person.year,
                       style: new TextStyle(
+                          fontSize: 16.0,
                           color: Theme.of(context).primaryColor,
                           fontStyle: FontStyle.italic),
                     ),
@@ -158,6 +160,7 @@ class ProfileState extends State<Profile> {
               textAlign: TextAlign.start,
               overflow: TextOverflow.ellipsis,
               style: new TextStyle(
+                fontSize: 16.0,
                 color: Theme.of(context).primaryColor,
               ),
             ),
@@ -166,7 +169,7 @@ class ProfileState extends State<Profile> {
             person.description,
             textAlign: TextAlign.start,
             style: new TextStyle(
-              fontSize: 11.0,
+              fontSize: 16.0,
             ),
           ),
         ],
@@ -184,7 +187,9 @@ class ProfileState extends State<Profile> {
                 margin: const EdgeInsets.only(top: 16.0),
                 child: new Text(
                   "Interests",
-                  style: new TextStyle(color: Theme.of(context).primaryColor),
+                  style: new TextStyle(
+                      fontSize: 18.0,
+                      color: Theme.of(context).primaryColor),
                 ),
               ),
               new Row(
@@ -211,8 +216,8 @@ class ProfileState extends State<Profile> {
                               new Text(
                                 ThemeNames.art_music,
                                 style: new TextStyle(
+                                  fontSize: 14.0,
                                   color: Colors.grey,
-                                  fontSize: 11.0,
                                 ),
                               ),
                             ],
@@ -237,7 +242,7 @@ class ProfileState extends State<Profile> {
                                ThemeNames.apps_internet,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -268,7 +273,7 @@ class ProfileState extends State<Profile> {
                                ThemeNames.book_circles,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -293,7 +298,7 @@ class ProfileState extends State<Profile> {
                                ThemeNames.film_games,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -324,7 +329,7 @@ class ProfileState extends State<Profile> {
                                 ThemeNames.culture_edu,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -349,7 +354,7 @@ class ProfileState extends State<Profile> {
                                 ThemeNames.nature_society,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -380,7 +385,7 @@ class ProfileState extends State<Profile> {
                                 ThemeNames.poetry_prose,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -405,7 +410,7 @@ class ProfileState extends State<Profile> {
                                 ThemeNames.language,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],

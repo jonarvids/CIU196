@@ -109,6 +109,12 @@ class MatchesState extends State<Matches> {
   }
 
   Widget buildItem(EventItem item) {
+    ImageProvider image = null;
+    if (item.userFile != null) {
+      image = new FileImage(item.userFile);
+    } else {
+      image = new AssetImage(item.imageFile);
+    }
     return new Dismissible(
       key: new ObjectKey(item),
       direction: dismissDirection,
@@ -135,7 +141,7 @@ class MatchesState extends State<Matches> {
           child: new Column(
             children: [
               new ClipRect(
-                child: item.imageFile == null
+                child: item.imageFile != null
                     ? new Container(
                         alignment: Alignment.center,
                         color: Theme.of(context).disabledColor,
@@ -146,9 +152,7 @@ class MatchesState extends State<Matches> {
                         decoration: new BoxDecoration(
                           image: new DecorationImage(
                             fit: BoxFit.cover,
-                            image: new FileImage(
-                              item.imageFile,
-                            ),
+                            image: image,
                           ),
                         ),
                       ),
@@ -483,7 +487,7 @@ class MatchesState extends State<Matches> {
                                   Icons.check,
                                   color: Colors.white,
                                 ),
-                                color:Theme.of(context).accentColor
+                                color:const Color(0xff00E676)
                                 ,
                                 onPressed: () {
                                   setState(() {

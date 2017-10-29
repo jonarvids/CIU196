@@ -7,7 +7,7 @@ class EventItem {
   String description;
   String fromDate; //Parse into DateTime
   TimeOfDay fromTime; //Parse into TimeOfDay
-  File imageFile;
+  File userFile;
   Set<String> eventThemes;
   String id;
 
@@ -17,6 +17,7 @@ class EventItem {
     this.fromDate,
     this.fromTime,
     this.imageFile,
+    this.userFile,
     this.eventThemes,
     this.id
   });
