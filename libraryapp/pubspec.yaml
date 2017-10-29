@@ -23,6 +23,14 @@ flutter:
     - images/guy2.jpg
     - images/girl1.jpg
     - images/gamenight.jpg
+    - images/knittingnight.jpg
+    - images/movenight.jpg
+    - images/girl2.jpg
+    - images/guy3.jpg
+    - images/guy4.png
+    - images/guy5.jpg
+    - images/puzzle.png
+    - images/puzzles.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/.
