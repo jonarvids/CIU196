@@ -1,16 +1,27 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:quiver/core.dart';
+
+class UserKey {
+  static final String name = "name";
+  static final String occupation = "occupation";
+  static final String year = "year";
+  static final String description = "description";
+  static final String imageFile = "imageFile";
+  static final String eventThemes = "eventThemes";
+  static final String id = "id"; //Used mainly to associate with events.
+}
 
 class User {
-  final String name;
-  final String occupation;
-  final String year;
-  final String description;
-  final File imageFile;
-  final List<EventTheme> eventThemes;
-  final String id; //Used mainly to associate with events.
+  String name;
+  String occupation;
+  String year;
+  String description;
+  File imageFile;
+  Set<String> eventThemes;
+  String id; //Used mainly to associate with events.
 
-  const User({
+  User({
     this.name,
     this.imageFile,
     this.occupation,
@@ -18,10 +29,19 @@ class User {
     this.description,
     this.eventThemes,
     this.id});
+
+  @override
+  bool operator == (o) => o is User && o.id == id;
+  @override
+  int get hashCode => hash2(name.hashCode, year.hashCode);
+
 }
 
+
+
 abstract class UserRepository {
-  Future<List<User>> fetch();
+  Map<String, User> getUsers();
+  void addUser(User user);
 }
 
 class FetchUserDataException implements Exception {
@@ -35,10 +55,3 @@ class FetchUserDataException implements Exception {
 }
 
 //MARK: Theme data (Only use predefined theme names).
-class EventTheme {
-  final String name;
-
-  const EventTheme({
-    this.name});
-
-}

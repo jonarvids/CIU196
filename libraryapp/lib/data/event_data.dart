@@ -1,29 +1,40 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:libraryapp/data/user_data.dart';
+import 'package:quiver/core.dart';
 
 class EventItem {
-  final String title;
-  final String description;
-  final String fromDate; //Parse into DateTime
-  final TimeOfDay fromTime; //Parse into TimeOfDay
-  final File imageFile;
-  final List<EventTheme> eventThemes;
+  String title;
+  String description;
+  String fromDate; //Parse into DateTime
+  TimeOfDay fromTime; //Parse into TimeOfDay
+  String imageFile;
+  File userFile;
+  Set<String> eventThemes;
+  String id;
 
-  const EventItem({
+  EventItem({
     this.description,
     this.title,
     this.fromDate,
     this.fromTime,
     this.imageFile,
-    this.eventThemes
+    this.userFile,
+    this.eventThemes,
+    this.id
   });
+
+  @override
+  bool operator == (o) => o is EventItem && o.id == id;
+  @override
+  int get hashCode => hash2(title.hashCode, description.hashCode);
+
 }
 
 abstract class EventRepository {
-  Future<List<EventItem>> fetch();
+  Map<String, EventItem> getEvents();
+  void addEvent(EventItem event);
 }
+
 class FetchEventDataException implements Exception {
   String _message;
 

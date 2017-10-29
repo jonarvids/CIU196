@@ -1,50 +1,53 @@
 import "package:flutter/material.dart";
+import './screens/create_event.dart' as create_event;
 import 'package:collection/collection.dart' show lowerBound;
+import 'data/user_data.dart';
+import 'data/event_data.dart';
+import 'data/theme_names.dart';
 import "dart:io";
 import "dart:math";
 
 enum MatchesAction { reset, leftSwipe, rightSwipe, horizontal }
 
 class Matches extends StatefulWidget {
-  @override
-  MatchesState createState() => new MatchesState();
-}
+  User user;
+  EventRepository event_repo;
 
-class EventItem implements Comparable<EventItem> {
-  static var rand = new Random();
-  EventItem({this.index, this.title, this.description, this.imageFile});
-
-  EventItem.from(EventItem item)
-      : index = item.index,
-        title = item.title,
-        description = item.description,
-        imageFile = item.imageFile;
-
-  final int index;
-  final String title;
-  final String description;
-  final File imageFile;
-
-  bool artToggle = rand.nextBool(),
-      bookToggle = rand.nextBool(),
-      cultureToggle = rand.nextBool(),
-      poetryToggle = rand.nextBool(),
-      appsToggle = rand.nextBool(),
-      filmToggle = rand.nextBool(),
-      natureToggle = rand.nextBool(),
-      languageToggle = rand.nextBool();
+  Matches(this.user, this.event_repo);
 
   @override
-  int compareTo(EventItem other) => index.compareTo(other.index);
+  MatchesState createState() => new MatchesState(user, event_repo);
 }
 
 class MatchesState extends State<Matches> {
-  List<EventItem> eventItems;
+  User user;
+  EventRepository event_repo;
+  List<EventItem> eventItems = new List<EventItem>();
+  List<RandomEventItem> randomEvents;
   DismissDirection dismissDirection = DismissDirection.horizontal;
+  MatchesState(this.user, this.event_repo);
+
+
+  @override
+  initState() {
+    super.initState();
+    //initEventItems();
+    findEvents();
+  }
+
+  void findEvents() {
+    Set<String> themes = this.user.eventThemes;
+    var events = event_repo.getEvents().values.iterator;
+    while(events.moveNext()) {
+      if (events.current.eventThemes.intersection(themes).length > 0) {
+        eventItems.add(events.current);
+      }
+    }
+  }
 
   void initEventItems() {
-    eventItems = new List<EventItem>.generate(16, (int index) {
-      return new EventItem(
+    randomEvents = new List<RandomEventItem>.generate(16, (int index) {
+      return new RandomEventItem(
           index: index,
           title: "Title: $index",
           description:
@@ -53,16 +56,11 @@ class MatchesState extends State<Matches> {
     });
   }
 
-  @override
-  initState() {
-    super.initState();
-    initEventItems();
-  }
-
+@override
   void handleAction(MatchesAction action) {
     switch (action) {
       case MatchesAction.reset:
-        initEventItems();
+        findEvents();
         break;
       case MatchesAction.leftSwipe:
         dismissDirection = DismissDirection.endToStart;
@@ -95,12 +93,28 @@ class MatchesState extends State<Matches> {
 
   Widget buildAppBar(BuildContext context) {
     return new AppBar(
-      title: new Text("Matches"),
-      centerTitle: true,
-    );
+        title: new Text("Matches"),
+        centerTitle: true,
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.add),
+            tooltip: "Create Event",
+            onPressed: () {
+                 Navigator.of(context).push(new MaterialPageRoute<Null>(
+                      builder: (BuildContext context) =>
+                          new create_event.CreateEvent(),
+                    ));
+            })
+        ]);
   }
 
   Widget buildItem(EventItem item) {
+    ImageProvider image = null;
+    if (item.userFile != null) {
+      image = new FileImage(item.userFile);
+    } else {
+      image = new AssetImage(item.imageFile);
+    }
     return new Dismissible(
       key: new ObjectKey(item),
       direction: dismissDirection,
@@ -127,7 +141,7 @@ class MatchesState extends State<Matches> {
           child: new Column(
             children: [
               new ClipRect(
-                child: item.imageFile == null
+                child: item.imageFile != null
                     ? new Container(
                         alignment: Alignment.center,
                         color: Theme.of(context).disabledColor,
@@ -138,9 +152,7 @@ class MatchesState extends State<Matches> {
                         decoration: new BoxDecoration(
                           image: new DecorationImage(
                             fit: BoxFit.cover,
-                            image: new FileImage(
-                              item.imageFile,
-                            ),
+                            image: image,
                           ),
                         ),
                       ),
@@ -149,7 +161,7 @@ class MatchesState extends State<Matches> {
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.all(16.0),
                 child: new Text(
-                  "Event Title ${item.index}",
+                  item.title,
                   textAlign: TextAlign.start,
                   style: new TextStyle(
                     fontSize: 24.0,
@@ -190,7 +202,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.palette,
                                             size: 30.0,
-                                            color: item.artToggle
+                                            color: item.eventThemes.contains(ThemeNames.art_music)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -198,7 +210,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Art & Music",
+                                          ThemeNames.art_music,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -217,7 +229,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.computer,
                                             size: 30.0,
-                                            color: item.appsToggle
+                                            color: item.eventThemes.contains(ThemeNames.apps_internet)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -225,7 +237,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Apps & Internet",
+                                          ThemeNames.apps_internet,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -250,7 +262,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.local_library,
                                             size: 30.0,
-                                            color: item.bookToggle
+                                            color:  item.eventThemes.contains(ThemeNames.book_circles)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -258,7 +270,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Book circles",
+                                          ThemeNames.book_circles,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -277,7 +289,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.movie,
                                             size: 30.0,
-                                            color: item.filmToggle
+                                            color:  item.eventThemes.contains(ThemeNames.film_games)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -285,7 +297,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Film",
+                                          ThemeNames.film_games,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -310,7 +322,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.school,
                                             size: 30.0,
-                                            color: item.cultureToggle
+                                            color:  item.eventThemes.contains(ThemeNames.culture_edu)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -318,7 +330,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Culture & Education",
+                                          ThemeNames.culture_edu,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -337,7 +349,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.nature_people,
                                             size: 30.0,
-                                            color: item.natureToggle
+                                            color:  item.eventThemes.contains(ThemeNames.nature_society)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -345,7 +357,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Nature & Society",
+                                          ThemeNames.nature_society,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -370,7 +382,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.edit,
                                             size: 30.0,
-                                            color: item.poetryToggle
+                                            color:  item.eventThemes.contains(ThemeNames.poetry_prose)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -378,7 +390,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Poetry & Prose",
+                                          ThemeNames.poetry_prose,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -397,7 +409,7 @@ class MatchesState extends State<Matches> {
                                           child: new Icon(
                                             Icons.language,
                                             size: 30.0,
-                                            color: item.languageToggle
+                                            color:  item.eventThemes.contains(ThemeNames.language)
                                                 ? Theme.of(context).primaryColor
                                                 : Theme
                                                     .of(context)
@@ -405,7 +417,7 @@ class MatchesState extends State<Matches> {
                                           ),
                                         ),
                                         new Text(
-                                          "Laguage",
+                                          ThemeNames.language,
                                           style: new TextStyle(
                                             color: Colors.grey,
                                             fontSize: 11.0,
@@ -429,7 +441,7 @@ class MatchesState extends State<Matches> {
                                   Icons.block,
                                   color: Colors.white,
                                 ),
-                                color: Colors.red,
+                                color: const Color(0xFFFFA726),
                                 onPressed: () {
                                   setState(() {
                                     eventItems.remove(item);
@@ -475,7 +487,8 @@ class MatchesState extends State<Matches> {
                                   Icons.check,
                                   color: Colors.white,
                                 ),
-                                color: Colors.green,
+                                color:const Color(0xff00E676)
+                                ,
                                 onPressed: () {
                                   setState(() {
                                     eventItems.remove(item);
@@ -507,4 +520,34 @@ class MatchesState extends State<Matches> {
       ),
     );
   }
+}
+
+class RandomEventItem implements Comparable<RandomEventItem> {
+  static var rand = new Random();
+
+
+  RandomEventItem({this.index, this.title, this.description, this.imageFile});
+
+  RandomEventItem.from(RandomEventItem item)
+      : index = item.index,
+        title = item.title,
+        description = item.description,
+        imageFile = item.imageFile;
+
+  final int index;
+  final String title;
+  final String description;
+  final File imageFile;
+
+  bool artToggle = rand.nextBool(),
+      bookToggle = rand.nextBool(),
+      cultureToggle = rand.nextBool(),
+      poetryToggle = rand.nextBool(),
+      appsToggle = rand.nextBool(),
+      filmToggle = rand.nextBool(),
+      natureToggle = rand.nextBool(),
+      languageToggle = rand.nextBool();
+
+  @override
+  int compareTo(RandomEventItem other) => index.compareTo(other.index);
 }

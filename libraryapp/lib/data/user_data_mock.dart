@@ -1,64 +1,65 @@
-
-import 'dart:async';
+import 'dart:collection';
 import 'user_data.dart';
 import 'theme_names.dart';
-
 class MockUserRepository implements UserRepository{
   // Mock data
   // TODO: (No user image yet!!)
-  static const kUsers = const <User>[
-    const User(name:"Alice Johnsson",
+  Map _kUsers = new HashMap<String, User>();
+
+  MockUserRepository() {
+    var eventThemesa= new HashSet<String>();
+    eventThemesa.add(ThemeNames.language);
+    eventThemesa.add(ThemeNames.poetry_prose);
+    User _a = new User(
+        name: "Alice Johnsson",
         occupation:"History Teacher",
         year:"1979",
         description:
-        "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
-            " sed do eiusmod tempor incididunt ut labore et dolore"
-            " magna aliqua. Ut enim ad minim veniam, quis nostrud "
-            "exercitation ullamco laboris nisi ut aliquip ex ea "
-            "commodo consequat. ",
-        eventThemes: const <EventTheme>[
-          const EventTheme(name: ThemeNames.culture_edu),
-          const EventTheme(name: ThemeNames.art_music),
-          const EventTheme(name: ThemeNames.nature_society)],
-        id: "user_3"
-    ),
-    const User(name:"Ibrahim Syed",
+        "A cheerful teacher who loves to read and work with children.",
+        eventThemes: eventThemesa,
+        id: "user_3");
+
+    var eventThemesb= new HashSet<String>();
+    eventThemesb.add(ThemeNames.language);
+    eventThemesb.add(ThemeNames.culture_edu);
+    User _b = new User(
+        name: "Ibrahim Syed",
         occupation:"Author/Writer",
         year:"1985",
         description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
             " sed do eiusmod tempor incididunt ut labore et dolore"
-            " magna aliqua. Ut enim ad minim veniam, quis nostrud "
-            "exercitation ullamco laboris nisi ut aliquip ex ea "
-            "commodo consequat. Duis aute irure dolor in"
-            " reprehenderit in voluptate velit esse cillum dolore"
-            " eu fugiat nulla pariatur.",
-        eventThemes: const <EventTheme>[
-          const EventTheme(name: ThemeNames.poetry_prose),
-          const EventTheme(name: ThemeNames.language),
-          const EventTheme(name: ThemeNames.apps_internet),
-          const EventTheme(name: ThemeNames.book_circles)],
-          id: "user_2"
-    ),
-    const User(name:"Will Gardiner",
+            " magna aliqua.",
+        eventThemes: eventThemesb,
+        id: "user_2"
+    );
+
+    var eventThemesc= new HashSet<String>();
+    eventThemesc.add(ThemeNames.language);
+    eventThemesc.add(ThemeNames.culture_edu);
+    User _c = new User(
+        name: "Will Gardiner",
         occupation:"Student",
         year:"1996",
         description:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit,"
             " sed do eiusmod tempor incididunt ut labore et dolore"
             " magna aliqua.",
-        eventThemes: const <EventTheme>[
-          const EventTheme(name: ThemeNames.film),
-          const EventTheme(name: ThemeNames.apps_internet),
-          const EventTheme(name: ThemeNames.art_music),
-        ],
-        id: "user_1"
-    )
-  ];
-
-  Future<List<User>> fetch(){
-    return new Future.value(kUsers);
+        eventThemes:eventThemesc,
+        id: "user_default");
+    _kUsers.putIfAbsent(_a.id, ()=> _a);
+    _kUsers.putIfAbsent(_b.id, ()=> _b);
+    _kUsers.putIfAbsent(_c.id, ()=> _c);
   }
 
-}
 
+  @override
+  void addUser(User user) {
+    _kUsers.putIfAbsent(user.id, ()=> user);
+  }
+
+  @override
+  Map<String, User> getUsers() {
+    return _kUsers;
+  }
+}

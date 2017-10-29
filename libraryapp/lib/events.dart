@@ -1,20 +1,35 @@
 import "package:flutter/material.dart";
+import 'data/event_data.dart';
+import 'data/user_data.dart';
+import 'data/matched_event_data.dart';
 import './tabs/upcoming.dart' as first;
 import './tabs/created.dart' as second;
 import './screens/create_event.dart' as create_event;
 
 class Events extends StatefulWidget {
+  EventRepository event_repo;
+  MatchedEventRepository matched_event_repo;
+  UserRepository user_repo;
+  Events(this.event_repo, this.matched_event_repo, this.user_repo);
+
   @override
-  TabsState createState() => new TabsState();
+  TabsState createState() => new TabsState(event_repo,matched_event_repo,user_repo);
 }
 
 class TabsState extends State<Events> with SingleTickerProviderStateMixin {
   TabController controller;
+  EventRepository event_repo;
+  MatchedEventRepository matched_event_repo;
+  UserRepository user_repo;
+  User user;
+  TabsState(this.event_repo, this.matched_event_repo, this.user_repo);
 
   @override
   void initState() {
     super.initState();
     controller = new TabController(vsync: this, length: 4);
+    this.user = user_repo.getUsers()["user_default"];
+
   }
 
   @override

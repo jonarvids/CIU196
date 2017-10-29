@@ -11,19 +11,23 @@ import 'user_data_mock.dart';
  * by searching for all events that include that user. This is mock data
  * for ALL matched events for every user.
  */
-//TODO: Implement 'map' or other method to find which events are relevant to the current user.
 
 class MockMatchedEventRepository implements MatchedEventRepository{
     EventRepository eventRepository = new MockEventRepository();
     UserRepository userRepository = new MockUserRepository();
+
 
   static const kMatchedEvents = const <MatchedEventItem>[
     //TODO: Add mock event + users from the other repositories.
   ];
 
   @override
-  Future<List<MatchedEventItem>> fetch() {
-    return new Future.value(kMatchedEvents);
+  void addEvent(MatchedEventItem event) {
+    // TODO: implement addEvent
+  }
+  @override
+  Map<String, MatchedEventItem> getMatchedEvents() {
+    return null;//kMatchedEvents;
   }
 }
 

@@ -2,15 +2,35 @@ import 'package:flutter/material.dart';
 import './profile.dart' as first;
 import './matches.dart' as second;
 import './events.dart' as third;
+import 'data/user_data.dart' as user;
+import 'data/theme_names.dart' as themes;
+import 'data/user_data_mock.dart';
+import 'data/event_data_mock.dart';
+import 'data/matched_event_mock.dart';
 
 void main() {
   runApp(new MaterialApp(
     home: new Tabs(),
     theme: new ThemeData(
-           primaryColor: const Color(0xFF00acc1),
-           accentColor: const Color(0xFFFFEB3B),
-        ),
-  ));
+           primaryColor: const Color(0xFF00ACC1),
+          /* primaryTextTheme:new TextTheme(
+    body1: new TextStyle(
+    color: const Color(0xFFFFFFF)),
+           body2: new TextStyle(
+               color: const Color(0xFFFFFFF)),button: new TextStyle(
+               color: const Color(0xFFFFFFF)),
+           subhead: new TextStyle(
+               color: const Color(0xFFFFFFF)),caption: new TextStyle(
+               color: const Color(0xFFFFFFF)),
+           display1: new TextStyle(
+               color: const Color(0xFFFFFFF)),display2: new TextStyle(
+               color: const Color(0xFFFFFFF)),display3: new TextStyle(
+               color: const Color(0xFFFFFFF)),display4: new TextStyle(
+               color: const Color(0xFFFFFFF)),headline: new TextStyle(
+               color: const Color(0xFFFFFFF)),title: new TextStyle(
+               color: const Color(0xFFFFFFF))),*/
+           accentColor: const Color(0xFFFF4081))));
+
 }
 
 class Tabs extends StatefulWidget {
@@ -21,10 +41,14 @@ class Tabs extends StatefulWidget {
 class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   TabController controller;
   Choice choice;
+  MockUserRepository user_repo = new MockUserRepository();
+  MockEventRepository event_repo = new MockEventRepository();
+  MockMatchedEventRepository match_repo = new MockMatchedEventRepository();
 
   @override
   void initState() {
     super.initState();
+    //_saveUser(); //We tried an easier solution since we don't care to save it to file.
     controller = new TabController(
       vsync: this,
       length: 3,
@@ -42,6 +66,9 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
   void select() {
     setState(() {
       choice = choices[controller.index];
+      if (choice.title == "Match") {
+      //TODO: Make Matches listen to this and update events.
+      }
     });
   }
 
@@ -73,9 +100,9 @@ class TabsState extends State<Tabs> with SingleTickerProviderStateMixin {
         controller: controller,
         physics: new NeverScrollableScrollPhysics(),
         children: <Widget>[
-          new first.Profile(),
-          new second.Matches(),
-          new third.Events(),
+          new first.Profile(user_repo),
+          new second.Matches(user_repo.getUsers()["user_default"], event_repo),
+          new third.Events(event_repo,match_repo,user_repo), //TODO: Uncomment + implement
         ],
       ),
     );

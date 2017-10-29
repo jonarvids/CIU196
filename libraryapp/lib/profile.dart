@@ -1,11 +1,22 @@
+import 'dart:collection';
+
 import "package:flutter/material.dart";
 import 'dart:io';
 import 'data/theme_names.dart';
 import './screens/edit_profile.dart' as edit_profile;
+import 'data/user_data.dart';
 
-class Profile extends StatelessWidget {
-  ProfileData person = new ProfileData();
-  File imageFile;
+class Profile extends StatefulWidget{
+  UserRepository user_repo;
+  Profile(this.user_repo);
+
+  @override
+  ProfileState createState() => new ProfileState(user_repo);
+}
+
+class ProfileState extends State<Profile> {
+  UserRepository user_repo;
+  User person = new User(name: "",description: "", year:  "",occupation: "");
   bool artToggle = true,
       bookToggle = false,
       cultureToggle = true,
@@ -15,8 +26,30 @@ class Profile extends StatelessWidget {
       natureToggle = false,
       languageToggle = false;
 
+  ProfileState(this.user_repo);
+
+  @override
+  void initState() {
+    super.initState();
+    //get the DEFAULT USER
+    person = user_repo.getUsers()["user_default"];
+    updateInterests();
+  }
+
+  updateInterests() {
+    artToggle = person.eventThemes.contains(ThemeNames.art_music);
+    bookToggle = person.eventThemes.contains(ThemeNames.book_circles);
+    cultureToggle = person.eventThemes.contains(ThemeNames.culture_edu);
+    poetryToggle = person.eventThemes.contains(ThemeNames.poetry_prose);
+    appsToggle = person.eventThemes.contains(ThemeNames.apps_internet);
+    filmToggle = person.eventThemes.contains(ThemeNames.film_games);
+    natureToggle = person.eventThemes.contains(ThemeNames.nature_society);
+    languageToggle = person.eventThemes.contains(ThemeNames.language);
+  }
+
   @override
   Widget build(BuildContext context) {
+    updateInterests();
     return new Scaffold(
       appBar: buildAppBar(context),
       body: buildBody(context),
@@ -33,7 +66,7 @@ class Profile extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(new MaterialPageRoute<Null>(
                     builder: (BuildContext context) =>
-                        new edit_profile.EditProfile(),
+                        new edit_profile.EditProfile(person),
                   ));
             },
           ),
@@ -50,7 +83,7 @@ class Profile extends StatelessWidget {
               child: new Column(
                 children: [
                   new ClipOval(
-                    child: imageFile == null
+                    child: person.imageFile == null
                         ? new Container(
                             alignment: Alignment.center,
                             color: Theme.of(context).disabledColor,
@@ -72,7 +105,7 @@ class Profile extends StatelessWidget {
                               image: new DecorationImage(
                                 fit: BoxFit.cover,
                                 image: new FileImage(
-                                  imageFile,
+                                  person.imageFile,
                                   scale: 0.25,
                                 ),
                               ),
@@ -86,7 +119,7 @@ class Profile extends StatelessWidget {
                       style: new TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18.0,
+                        fontSize: 22.0,
                       ),
                     ),
                   ),
@@ -95,6 +128,7 @@ class Profile extends StatelessWidget {
                       person.occupation,
                       style: new TextStyle(
                           color: Theme.of(context).primaryColor,
+                          fontSize: 16.0,
                           fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -102,6 +136,7 @@ class Profile extends StatelessWidget {
                     child: new Text(
                       "Born " + person.year,
                       style: new TextStyle(
+                          fontSize: 16.0,
                           color: Theme.of(context).primaryColor,
                           fontStyle: FontStyle.italic),
                     ),
@@ -125,6 +160,7 @@ class Profile extends StatelessWidget {
               textAlign: TextAlign.start,
               overflow: TextOverflow.ellipsis,
               style: new TextStyle(
+                fontSize: 18.0,
                 color: Theme.of(context).primaryColor,
               ),
             ),
@@ -133,7 +169,7 @@ class Profile extends StatelessWidget {
             person.description,
             textAlign: TextAlign.start,
             style: new TextStyle(
-              fontSize: 11.0,
+              fontSize: 16.0,
             ),
           ),
         ],
@@ -151,7 +187,9 @@ class Profile extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 16.0),
                 child: new Text(
                   "Interests",
-                  style: new TextStyle(color: Theme.of(context).primaryColor),
+                  style: new TextStyle(
+                      fontSize: 18.0,
+                      color: Theme.of(context).primaryColor),
                 ),
               ),
               new Row(
@@ -178,8 +216,8 @@ class Profile extends StatelessWidget {
                               new Text(
                                 ThemeNames.art_music,
                                 style: new TextStyle(
+                                  fontSize: 14.0,
                                   color: Colors.grey,
-                                  fontSize: 11.0,
                                 ),
                               ),
                             ],
@@ -204,7 +242,7 @@ class Profile extends StatelessWidget {
                                ThemeNames.apps_internet,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -235,7 +273,7 @@ class Profile extends StatelessWidget {
                                ThemeNames.book_circles,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -257,10 +295,10 @@ class Profile extends StatelessWidget {
                                 ),
                               ),
                               new Text(
-                               ThemeNames.film,
+                               ThemeNames.film_games,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -291,7 +329,7 @@ class Profile extends StatelessWidget {
                                 ThemeNames.culture_edu,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -316,7 +354,7 @@ class Profile extends StatelessWidget {
                                 ThemeNames.nature_society,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -347,7 +385,7 @@ class Profile extends StatelessWidget {
                                 ThemeNames.poetry_prose,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -372,7 +410,7 @@ class Profile extends StatelessWidget {
                                 ThemeNames.language,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -398,12 +436,4 @@ class Profile extends StatelessWidget {
       ],
     );
   }
-}
-
-class ProfileData {
-  String name = "John Johnsson";
-  String occupation = "Blacksmith";
-  String year = "1901";
-  String description =
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 }
