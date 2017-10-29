@@ -160,7 +160,7 @@ class ProfileState extends State<Profile> {
               textAlign: TextAlign.start,
               overflow: TextOverflow.ellipsis,
               style: new TextStyle(
-                fontSize: 16.0,
+                fontSize: 18.0,
                 color: Theme.of(context).primaryColor,
               ),
             ),

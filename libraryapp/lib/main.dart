@@ -12,10 +12,25 @@ void main() {
   runApp(new MaterialApp(
     home: new Tabs(),
     theme: new ThemeData(
-           primaryColor: const Color(0xFF00acc1),
-           accentColor: const Color(0xFFFFEB3B),
-        ),
-  ));
+           primaryColor: const Color(0xFF00ACC1),
+          /* primaryTextTheme:new TextTheme(
+    body1: new TextStyle(
+    color: const Color(0xFFFFFFF)),
+           body2: new TextStyle(
+               color: const Color(0xFFFFFFF)),button: new TextStyle(
+               color: const Color(0xFFFFFFF)),
+           subhead: new TextStyle(
+               color: const Color(0xFFFFFFF)),caption: new TextStyle(
+               color: const Color(0xFFFFFFF)),
+           display1: new TextStyle(
+               color: const Color(0xFFFFFFF)),display2: new TextStyle(
+               color: const Color(0xFFFFFFF)),display3: new TextStyle(
+               color: const Color(0xFFFFFFF)),display4: new TextStyle(
+               color: const Color(0xFFFFFFF)),headline: new TextStyle(
+               color: const Color(0xFFFFFFF)),title: new TextStyle(
+               color: const Color(0xFFFFFFF))),*/
+           accentColor: const Color(0xFFFF4081))));
+
 }
 
 class Tabs extends StatefulWidget {

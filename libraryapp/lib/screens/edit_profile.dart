@@ -230,6 +230,7 @@ class EditProfileState extends State<EditProfile> {
                       "Tap to update your profile picture",
                       style: new TextStyle(
                         color: Theme.of(context).disabledColor,
+                        fontSize:16.0,
                       ),
                     ),
                   )
@@ -252,7 +253,8 @@ class EditProfileState extends State<EditProfile> {
             margin: const EdgeInsets.only(top: 16.0),
             child: new Text(
               "Information",
-              style: new TextStyle(color: Theme.of(context).primaryColor),
+              style: new TextStyle(
+                  fontSize:18.0,color: Theme.of(context).primaryColor),
             ),
           ),
           new TextFormField(
@@ -296,6 +298,24 @@ class EditProfileState extends State<EditProfile> {
       ),
     );
 
+    Widget description = new Container(
+      child: new Column(
+          children: <Widget>[
+            new TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'What is this event about?',
+                  labelText: 'Description *',
+                ),
+                maxLines: 5,
+                onSaved: (String value) {
+                  profile.description = value;
+                }
+              //TODO: No validator yet.
+            ),
+          ]
+      )
+    );
+
     Widget interestsSection = new Container(
       child: new Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,7 +327,9 @@ class EditProfileState extends State<EditProfile> {
                 margin: const EdgeInsets.only(top: 16.0),
                 child: new Text(
                   "Interests **",
-                  style: new TextStyle(color: Theme.of(context).primaryColor),
+                  style: new TextStyle(
+                      fontSize:18.0,
+                      color: Theme.of(context).primaryColor),
                 ),
               ),
               new Row(
@@ -335,7 +357,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.art_music,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -360,7 +382,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.apps_internet,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -391,7 +413,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.book_circles,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -416,7 +438,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.film_games,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -448,7 +470,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.culture_edu,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -473,7 +495,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.nature_society,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -504,7 +526,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.poetry_prose,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -530,7 +552,7 @@ class EditProfileState extends State<EditProfile> {
                                 ThemeNames.language,
                                 style: new TextStyle(
                                   color: Colors.grey,
-                                  fontSize: 11.0,
+                                  fontSize: 14.0,
                                 ),
                               ),
                             ],
@@ -563,7 +585,9 @@ class EditProfileState extends State<EditProfile> {
           ),
           new Text(
             "** At least one is required",
-            style: new TextStyle(color: Theme.of(context).primaryColor),
+            style: new TextStyle(
+
+                color: Theme.of(context).primaryColor),
           ),
         ],
       ),
